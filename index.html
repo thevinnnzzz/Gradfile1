@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graduate School Research Collection</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#BF2F2F',secondary:''},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+<link rel="stylesheet" href="style.css">
+<style>
+/* Star Rating Styles */
+.rating-box {
+    gap: 20px;
+    display: flex;
+    position: relative;
+    flex-direction: row-reverse;
+    justify-content: center;
+    margin-bottom: 90px;
+}
+
+.rating-box label {
+    font-size: 45px;
+    cursor: pointer;
+}
+
+input:not(:checked)~label {
+    color: #cccccc;
+    transition: .3s;
+}
+
+input:checked~label {
+    color: #ffa534;
+    animation: filling-animation .7s forwards;
+    filter: drop-shadow(0px 0px 10px rgba(255, 165, 52, 0.5));
+}
+
+.emojis {
+    width: 100%;
+    height: fit-content;
+    position: absolute;
+    text-align: center;
+    bottom: -80px;
+    font-size: 40px;
+    color: #000;
+}
+
+#rating-1:checked~.emojis::after {
+    content: '😞';
+}
+
+#rating-2:checked~.emojis::after {
+    content: '😐';
+}
+
+#rating-3:checked~.emojis::after {
+    content: '🙂';
+}
+
+#rating-4:checked~.emojis::after {
+    content: '😃';
+}
+
+#rating-5:checked~.emojis::after {
+    content: '😍';
+}
+
+@keyframes filling-animation {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(0);
+    }
+
+    60% {
+        transform: scale(1.2);
+    }
+}
+
+/* Badge Styles */
+.badge {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+.badge:hover {
+  transform: scale(1.05);
+}
+.badge-bronze {
+  background: linear-gradient(145deg, #cd7f32, #e9c4a7);
+}
+.badge-silver {
+  background: linear-gradient(145deg, #c0c0c0, #e6e6e6);
+}
+.badge-gold {
+  background: linear-gradient(145deg, #ffd700, #ffec99);
+}
+
+/* Form Glow Effects */
+.form-glow {
+  position: relative;
+  animation: form-pulse 3s infinite alternate;
+}
+
+.form-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  border-radius: 0.5rem;
+  background: rgba(191, 47, 47, 0.2);
+  animation: form-glow-animation 3s infinite alternate;
+}
+
+@keyframes form-pulse {
+  0% {
+    box-shadow: 0 0 10px rgba(191, 47, 47, 0.4), 0 0 20px rgba(191, 47, 47, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(191, 47, 47, 0.5), 0 0 30px rgba(191, 47, 47, 0.3);
+  }
+}
+
+@keyframes form-glow-animation {
+  0% {
+    opacity: 0;
+    box-shadow: 0 0 5px rgba(191, 47, 47, 0.3) inset;
+  }
+  100% {
+    opacity: 0.3;
+    box-shadow: 0 0 10px rgba(191, 47, 47, 0.5) inset;
+  }
+}
+
+/* Input focus glow effect */
+.form-glow input:focus,
+.form-glow select:focus,
+.form-glow textarea:focus {
+  outline: none;
+  border-color: #BF2F2F;
+  box-shadow: 0 0 0 2px rgba(191, 47, 47, 0.2), 0 0 8px rgba(191, 47, 47, 0.4);
+  transition: all 0.3s ease;
+  animation: input-pulse 1.5s infinite alternate;
+}
+
+@keyframes input-pulse {
+  0% {
+    box-shadow: 0 0 0 2px rgba(191, 47, 47, 0.2), 0 0 8px rgba(191, 47, 47, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 3px rgba(191, 47, 47, 0.3), 0 0 12px rgba(191, 47, 47, 0.5);
+  }
+}
+
+/* Form submit button glow */
+.submit-btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn-glow::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: submit-btn-shine 3s infinite;
+}
+
+@keyframes submit-btn-shine {
+  0% {
+    left: -50%;
+    top: -50%;
+  }
+  100% {
+    left: 150%;
+    top: 150%;
+  }
+}
+
+/* Badge Unlock Glow Animation */
+.badge-glow {
+  animation: badge-pulse 2s infinite alternate;
+  position: relative;
+  z-index: 1;
+}
+
+/* Neon glow effects for badges */
+.badge-bronze-glow {
+  box-shadow: 0 0 5px #fff, 0 0 10px #cd7f32, 0 0 15px #cd7f32, 0 0 20px #cd7f32;
+  animation: glow-bronze 1.5s ease-in-out infinite alternate;
+}
+
+.badge-silver-glow {
+  box-shadow: 0 0 5px #fff, 0 0 10px #c0c0c0, 0 0 15px #c0c0c0, 0 0 20px #c0c0c0;
+  animation: glow-silver 1.5s ease-in-out infinite alternate;
+}
+
+.badge-gold-glow {
+  box-shadow: 0 0 5px #fff, 0 0 10px #ffd700, 0 0 15px #ffd700, 0 0 20px #ffd700;
+  animation: glow-gold 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow-bronze {
+  0% {
+    box-shadow: 0 0 5px #fff, 0 0 10px #cd7f32, 0 0 15px #cd7f32, 0 0 20px #cd7f32;
+  }
+  100% {
+    box-shadow: 0 0 10px #fff, 0 0 15px #cd7f32, 0 0 20px #cd7f32, 0 0 25px #cd7f32, 0 0 30px #cd7f32;
+  }
+}
+
+@keyframes glow-silver {
+  0% {
+    box-shadow: 0 0 5px #fff, 0 0 10px #c0c0c0, 0 0 15px #c0c0c0, 0 0 20px #c0c0c0;
+  }
+  100% {
+    box-shadow: 0 0 10px #fff, 0 0 15px #c0c0c0, 0 0 20px #c0c0c0, 0 0 25px #c0c0c0, 0 0 30px #c0c0c0;
+  }
+}
+
+@keyframes glow-gold {
+  0% {
+    box-shadow: 0 0 5px #fff, 0 0 10px #ffd700, 0 0 15px #ffd700, 0 0 20px #ffd700;
+  }
+  100% {
+    box-shadow: 0 0 10px #fff, 0 0 15px #ffd700, 0 0 20px #ffd700, 0 0 25px #ffd700, 0 0 30px #ffd700;
+  }
+}
+
+/* Badge icon glow effects */
+.badge-bronze-glow .badge-icon {
+  color: rgba(255, 255, 255, 0.95);
+  animation: icon-glow-bronze 1.5s ease-in-out infinite alternate;
+  font-weight: bold;
+}
+
+.badge-silver-glow .badge-icon {
+  color: rgba(255, 255, 255, 0.95);
+  animation: icon-glow-silver 1.5s ease-in-out infinite alternate;
+  font-weight: bold;
+}
+
+.badge-gold-glow .badge-icon {
+  color: rgba(255, 255, 255, 0.95);
+  animation: icon-glow-gold 1.5s ease-in-out infinite alternate;
+  font-weight: bold;
+}
+
+@keyframes icon-glow-bronze {
+  0% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #cd7f32, 0 0 20px #cd7f32, 0 0 25px #cd7f32, 0 0 30px #cd7f32;
+  }
+  100% {
+    text-shadow: 0 0 10px #fff, 0 0 15px #cd7f32, 0 0 20px #cd7f32, 0 0 25px #cd7f32, 0 0 30px #cd7f32, 0 0 35px #cd7f32;
+  }
+}
+
+@keyframes icon-glow-silver {
+  0% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #c0c0c0, 0 0 20px #c0c0c0, 0 0 25px #c0c0c0, 0 0 30px #c0c0c0;
+  }
+  100% {
+    text-shadow: 0 0 10px #fff, 0 0 15px #c0c0c0, 0 0 20px #c0c0c0, 0 0 25px #c0c0c0, 0 0 30px #c0c0c0, 0 0 35px #c0c0c0;
+  }
+}
+
+@keyframes icon-glow-gold {
+  0% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ffd700, 0 0 20px #ffd700, 0 0 25px #ffd700, 0 0 30px #ffd700;
+  }
+  100% {
+    text-shadow: 0 0 10px #fff, 0 0 15px #ffd700, 0 0 20px #ffd700, 0 0 25px #ffd700, 0 0 30px #ffd700, 0 0 35px #ffd700;
+  }
+}
+</style>
+</head>
+<body>
+<div class="min-h-screen flex flex-col">
+<!-- Header -->
+<header class="bg-white text-primary shadow-md">
+<div class="container mx-auto px-4 py-4 flex justify-between items-center">
+<div class="flex items-center">
+<img src="https://static.readdy.ai/image/2610098eb4b7d6791c922033875fe1ac/cb8d8ce12e7b02e44cac157a69c7b894.png" alt="LPU Logo" class="h-12 mr-3">
+<span class="hidden md:inline-block text-lg font-medium">Undergraduate School Research Collection</span>
+</div>
+<nav>
+<ul class="flex space-x-6">
+<li><button id="adminLoginBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">Admin Login</button></li>
+<li><button id="adminLogoutBtn" class="hidden bg-gray-100 text-gray-800 px-4 py-2 !rounded-button font-medium hover:bg-gray-200 transition flex items-center whitespace-nowrap">
+<i class="ri-logout-box-line mr-2"></i>
+Logout
+</button></li>
+</ul>
+</nav>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow container mx-auto px-4 py-8">
+<div id="submissionForm" class="max-w-4xl mx-auto bg-white shadow-md rounded p-8 form-glow">
+<h2 class="text-2xl font-semibold text-gray-800 mb-6">Research Record Submission</h2>
+<!-- User Type Selection -->
+<div class="mb-8">
+<h3 class="text-lg font-medium text-gray-700 mb-3">Select User Type:</h3>
+<div class="flex space-x-6">
+<label class="custom-radio flex items-center cursor-pointer">
+<input type="radio" name="userType" value="lpu" checked id="lpuRadio">
+<span class="radio-mark"></span>
+<span class="text-gray-800">LPU Student</span>
+</label>
+<label class="custom-radio flex items-center cursor-pointer">
+<input type="radio" name="userType" value="non-lpu" id="nonLpuRadio">
+<span class="radio-mark"></span>
+<span class="text-gray-800">Non-LPU Student</span>
+</label>
+</div>
+</div>
+<!-- Form -->
+<form id="researchForm" class="space-y-6">
+<!-- Common Fields -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="col-span-2 md:col-span-1">
+<label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+<input type="text" id="fullName" name="fullName" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+</div>
+<!-- LPU Student Fields -->
+<div id="lpuFields" class="col-span-2 md:col-span-1">
+<label for="studentNumber" class="block text-sm font-medium text-gray-700 mb-1">Student Number</label>
+<input type="text" id="studentNumber" name="studentNumber" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+</div>
+<div id="campusField" class="col-span-2 md:col-span-1">
+<label for="campus" class="block text-sm font-medium text-gray-700 mb-1">Campus</label>
+<div class="relative">
+<select id="campus" name="campus" class="w-full px-4 py-2 border border-gray-300 rounded appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8" required>
+<option value="">Select Campus</option>
+<option value="Main Campus">Main Campus</option>
+<option value="LIMA Campus">LIMA Campus</option>
+<option value="Riverside Campus">Riverside Campus</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-500"></i>
+</div>
+</div>
+</div>
+<div id="programField" class="col-span-2 md:col-span-1">
+<label for="program" class="block text-sm font-medium text-gray-700 mb-1">Program/Department</label>
+<div class="relative">
+<select id="program" name="program" class="w-full px-4 py-2 border border-gray-300 rounded appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8" required>
+<option value="">Select Program/Department</option>
+<optgroup label="College of Nursing">
+  <option value="BS Nursing">BS Nursing</option>
+</optgroup>
+<optgroup label="College of International Tourism & Hospitality Management">
+  <option value="BS International Travel and Tourism Management">BS International Travel and Tourism Management</option>
+  <option value="BS International Hospitality Management">BS International Hospitality Management</option>
+  <option value="Associate in International Travel & Tourism Management">Associate in International Travel & Tourism Management</option>
+  <option value="Associate in International Hospitality Management">Associate in International Hospitality Management</option>
+</optgroup>
+<optgroup label="College of Business Administration">
+  <option value="BS Accountancy">BS Accountancy</option>
+  <option value="BS Business Administration">BS Business Administration</option>
+  <option value="BS Customs Administration">BS Customs Administration</option>
+</optgroup>
+<optgroup label="College of Criminal Justice Education">
+  <option value="BS Criminology">BS Criminology</option>
+  <option value="Bachelor of Forensic Science">Bachelor of Forensic Science</option>
+</optgroup>
+<optgroup label="College of Dentistry">
+  <option value="Doctor of Dental Medicine">Doctor of Dental Medicine</option>
+</optgroup>
+<optgroup label="College of Computing, Arts and Sciences">
+  <option value="AB Communication">AB Communication</option>
+  <option value="AB Psychology">AB Psychology</option>
+  <option value="BS Psychology">BS Psychology</option>
+  <option value="Bachelor of Multimedia Arts">Bachelor of Multimedia Arts</option>
+  <option value="BS Computer Science">BS Computer Science</option>
+  <option value="BS Information Technology">BS Information Technology</option>
+</optgroup>
+<optgroup label="College of Allied Medical Professions">
+  <option value="BS Biology (Medical Biology)">BS Biology (Medical Biology)</option>
+  <option value="BS Medical Laboratory Science">BS Medical Laboratory Science</option>
+  <option value="BS Pharmacy">BS Pharmacy</option>
+  <option value="BS Physical Therapy">BS Physical Therapy</option>
+  <option value="BS Radiologic Technology">BS Radiologic Technology</option>
+</optgroup>
+<optgroup label="Lyceum International Maritime Academy">
+  <option value="BS Marine Transportation">BS Marine Transportation</option>
+  <option value="BS Marine Engineering">BS Marine Engineering</option>
+</optgroup>
+<optgroup label="Expanded Tertiary Education Equivalency and Accreditation Program (ETEEAP)">
+  <option value="ETEEAP - BS Business Administration">BS Business Administration</option>
+  <option value="ETEEAP - BS Criminology">BS Criminology</option>
+  <option value="ETEEAP - BS Information Technology">BS Information Technology</option>
+  <option value="ETEEAP - BS International Hospitality Management">BS International Hospitality Management</option>
+  <option value="ETEEAP - BS Nursing">BS Nursing</option>
+</optgroup>
+<optgroup label="Center for Technical Education">
+  <option value="Certificate in Culinary Arts">Certificate in Culinary Arts</option>
+  <option value="Certificate in Pastry Arts">Certificate in Pastry Arts</option>
+</optgroup>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-500"></i>
+</div>
+</div>
+</div>
+<!-- Non-LPU Student Fields -->
+<div id="schoolField" class="col-span-2 hidden">
+<label for="schoolName" class="block text-sm font-medium text-gray-700 mb-1">Name of School</label>
+<input type="text" id="schoolName" name="schoolName" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+</div>
+<!-- Thesis Title (Common) -->
+<div class="col-span-2">
+<label for="thesisTitle" class="block text-sm font-medium text-gray-700 mb-1">Title of Thesis</label>
+<textarea id="thesisTitle" name="thesisTitle" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required></textarea>
+</div>
+</div>
+<!-- Submit Button -->
+<div class="flex justify-end">
+<button type="submit" class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-opacity-90 transition flex items-center whitespace-nowrap submit-btn-glow">
+<i class="ri-save-line mr-2"></i>
+Submit Research Record
+</button>
+</div>
+</form>
+<!-- Success Modal (Hidden by default) -->
+<div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+<div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+<div class="bg-primary px-6 py-4 flex justify-between items-center">
+<h3 class="text-xl font-medium text-white flex items-center">
+<i class="ri-file-list-line mr-2"></i>
+Review Submission
+</h3>
+<button id="closeModalBtn" class="text-white hover:text-gray-200">
+<i class="ri-close-line text-xl"></i>
+</button>
+</div>
+<div class="px-6 py-4">
+<div class="mb-4">
+<p class="text-gray-700 mb-2">Please review your submission details before confirming.</p>
+</div>
+<div class="border rounded-lg p-4 bg-gray-50 mb-4">
+<h4 class="font-medium text-gray-800 mb-2">Submission Details</h4>
+<div class="space-y-2 text-sm">
+<div class="grid grid-cols-3">
+<span class="text-gray-600 col-span-1">User Type:</span>
+<span id="summaryUserType" class="font-medium col-span-2"></span>
+</div>
+<div class="grid grid-cols-3">
+<span class="text-gray-600 col-span-1">Full Name:</span>
+<span id="summaryName" class="font-medium col-span-2"></span>
+</div>
+<div id="summaryStudentNumberRow" class="grid grid-cols-3">
+<span class="text-gray-600 col-span-1">Student Number:</span>
+<span id="summaryStudentNumber" class="font-medium col-span-2"></span>
+</div>
+<div id="summaryCampusRow" class="grid grid-cols-3">
+<span class="text-gray-600 col-span-1">Campus:</span>
+<span id="summaryCampus" class="font-medium col-span-2"></span>
+</div>
+<div id="summaryProgramRow" class="grid grid-cols-3">
+<span class="text-gray-600 col-span-1">Program:</span>
+<span id="summaryProgram" class="font-medium col-span-2"></span>
+</div>
+<div id="summarySchoolRow" class="grid grid-cols-3 hidden">
+<span class="text-gray-600 col-span-1">School:</span>
+<span id="summarySchool" class="font-medium col-span-2"></span>
+</div>
+<div class="grid grid-cols-3">
+<span class="text-gray-600 col-span-1">Thesis Title:</span>
+<span id="summaryThesis" class="font-medium col-span-2"></span>
+</div>
+<div class="grid grid-cols-3">
+<span class="text-gray-600 col-span-1">Date:</span>
+<span id="summaryDate" class="font-medium col-span-2"></span>
+</div>
+</div>
+</div>
+<div class="flex justify-between">
+<button id="editSubmissionBtn" class="bg-gray-100 text-gray-800 px-4 py-2 !rounded-button font-medium hover:bg-gray-200 transition flex items-center whitespace-nowrap">
+<i class="ri-edit-line mr-2"></i>
+Edit
+</button>
+<button id="confirmSubmissionBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">
+Confirm
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Admin Login Modal (Hidden by default) -->
+<div id="adminLoginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+<div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+<div class="bg-primary px-6 py-4 flex justify-between items-center">
+<h3 class="text-xl font-medium text-white flex items-center">
+<i class="ri-admin-line mr-2"></i>
+Admin Login
+</h3>
+<button id="closeLoginModalBtn" class="text-white hover:text-gray-200">
+<i class="ri-close-line text-xl"></i>
+</button>
+</div>
+<div class="px-6 py-6">
+<form id="adminLoginForm" class="space-y-4">
+<div>
+<label for="adminUsername" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+<input type="text" id="adminUsername" name="adminUsername" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+</div>
+<div>
+<label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+<div class="relative">
+<input type="password" id="adminPassword" name="adminPassword" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+<button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2">
+<i class="ri-eye-off-line text-gray-500"></i>
+</button>
+</div>
+</div>
+<div id="loginError" class="hidden text-red-500 text-sm"></div>
+<button type="submit" class="w-full bg-primary text-white px-4 py-3 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">
+Login
+</button>
+</form>
+</div>
+</div>
+</div>
+<!-- Admin Dashboard (Hidden by default) -->
+<div id="adminDashboard" class="hidden w-full mx-auto mt-12 bg-white shadow-md rounded p-8">
+<div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+<h2 class="text-2xl font-semibold text-gray-800">Admin Dashboard</h2>
+<div class="flex flex-col md:flex-row gap-4">
+<div class="flex flex-col sm:flex-row gap-2">
+<div class="relative">
+<select id="searchField" class="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8">
+<option value="all">All Fields</option>
+<option value="name">Name</option>
+<option value="studentNumber">Student Number</option>
+<option value="campus">Campus</option>
+<option value="program">Program/Department</option>
+<option value="school">School Name</option>
+<option value="thesisTitle">Thesis Title</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-500"></i>
+</div>
+</div>
+<div class="relative flex-grow">
+<input type="text" id="searchInput" placeholder="Search records..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+<i class="ri-search-line text-gray-500"></i>
+</div>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-2">
+<div class="relative">
+<select id="userTypeFilter" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8">
+<option value="all">All Users</option>
+<option value="lpu">LPU Students</option>
+<option value="non-lpu">Non-LPU Students</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-500"></i>
+</div>
+</div>
+<div class="relative">
+<select id="campusFilter" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent appearance-none pr-8">
+<option value="all">All Campuses</option>
+<option value="Main Campus">Main Campus</option>
+<option value="LIMA Campus">LIMA Campus</option>
+<option value="Riverside Campus">Riverside Campus</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<i class="ri-arrow-down-s-line text-gray-500"></i>
+</div>
+</div>
+<div class="relative">
+<input type="date" id="dateFilter" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+</div>
+</div>
+<button id="adminExportBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition flex items-center whitespace-nowrap justify-center">
+<i class="ri-download-line mr-2"></i>
+Export Records
+</button>
+</div>
+</div>
+<!-- Records Table -->
+<div class="overflow-x-auto max-h-[calc(100vh-250px)] overflow-y-auto">
+<table class="min-w-full bg-white table-fixed">
+<thead class="sticky top-0 bg-gray-100">
+<tr class="text-gray-700">
+<th class="py-3 px-2 text-left font-medium w-[10%]">Date</th>
+<th class="py-3 px-2 text-left font-medium w-[8%]">User Type</th>
+<th class="py-3 px-2 text-left font-medium w-[12%]">Name</th>
+<th class="py-3 px-2 text-left font-medium w-[10%]">Student Number</th>
+<th class="py-3 px-2 text-left font-medium w-[10%]">Campus</th>
+<th class="py-3 px-2 text-left font-medium w-[12%]">Program/Department</th>
+<th class="py-3 px-2 text-left font-medium w-[12%]">School Name</th>
+<th class="py-3 px-2 text-left font-medium w-[18%]">Thesis Title</th>
+<th class="py-3 px-2 text-left font-medium w-[8%]">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200">
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-delete-bin-line mr-2"></i>
+        Confirm Deletion
+      </h3>
+      <button id="closeDeleteModalBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-4">
+      <div class="mb-6">
+        <p class="text-gray-700">Are you sure you want to delete this research record? This action cannot be undone.</p>
+      </div>
+      <div class="flex justify-end space-x-4">
+        <button id="cancelDeleteBtn" class="bg-gray-100 text-gray-800 px-4 py-2 !rounded-button font-medium hover:bg-gray-200 transition">
+          Cancel
+        </button>
+        <button id="confirmDeleteBtn" class="bg-red-600 text-white px-4 py-2 !rounded-button font-medium hover:bg-red-700 transition">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit Modal -->
+<div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-auto overflow-hidden">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-edit-line mr-2"></i>
+        Edit Research Record
+      </h3>
+      <button id="closeEditModalBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-4">
+      <form id="editForm" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-3">User Type:</label>
+            <div class="flex space-x-6">
+              <label class="custom-radio flex items-center cursor-pointer">
+                <input type="radio" name="editUserType" value="lpu" id="editLpuRadio">
+                <span class="radio-mark"></span>
+                <span class="text-gray-800">LPU Student</span>
+              </label>
+              <label class="custom-radio flex items-center cursor-pointer">
+                <input type="radio" name="editUserType" value="non-lpu" id="editNonLpuRadio">
+                <span class="radio-mark"></span>
+                <span class="text-gray-800">Non-LPU Student</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-span-2 md:col-span-1">
+            <label for="editFullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <input type="text" id="editFullName" name="editFullName" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+          </div>
+          <div id="editLpuFields" class="col-span-2 md:col-span-1">
+            <label for="editStudentNumber" class="block text-sm font-medium text-gray-700 mb-1">Student Number</label>
+            <input type="text" id="editStudentNumber" name="editStudentNumber" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+          </div>
+          <div id="editCampusField" class="col-span-2 md:col-span-1">
+            <label for="editCampus" class="block text-sm font-medium text-gray-700 mb-1">Campus</label>
+            <div class="relative">
+              <select id="editCampus" name="editCampus" class="w-full px-4 py-2 border border-gray-300 rounded appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
+                <option value="">Select Campus</option>
+                <option value="Main Campus">Main Campus</option>
+                <option value="LIMA Campus">LIMA Campus</option>
+                <option value="Riverside Campus">Riverside Campus</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <i class="ri-arrow-down-s-line text-gray-500"></i>
+              </div>
+            </div>
+          </div>
+          <div id="editProgramField" class="col-span-2 md:col-span-1">
+            <label for="editProgram" class="block text-sm font-medium text-gray-700 mb-1">Program/Department</label>
+            <div class="relative">
+              <select id="editProgram" name="editProgram" class="w-full px-4 py-2 border border-gray-300 rounded appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
+                <option value="">Select Program/Department</option>
+                <optgroup label="College of Nursing">
+                  <option value="BS Nursing">BS Nursing</option>
+                </optgroup>
+                <optgroup label="College of International Tourism & Hospitality Management">
+                  <option value="BS International Travel and Tourism Management">BS International Travel and Tourism Management</option>
+                  <option value="BS International Hospitality Management">BS International Hospitality Management</option>
+                  <option value="Associate in International Travel & Tourism Management">Associate in International Travel & Tourism Management</option>
+                  <option value="Associate in International Hospitality Management">Associate in International Hospitality Management</option>
+                </optgroup>
+                <optgroup label="College of Business Administration">
+                  <option value="BS Accountancy">BS Accountancy</option>
+                  <option value="BS Business Administration">BS Business Administration</option>
+                  <option value="BS Customs Administration">BS Customs Administration</option>
+                </optgroup>
+                <optgroup label="College of Criminal Justice Education">
+                  <option value="BS Criminology">BS Criminology</option>
+                  <option value="Bachelor of Forensic Science">Bachelor of Forensic Science</option>
+                </optgroup>
+                <optgroup label="College of Dentistry">
+                  <option value="Doctor of Dental Medicine">Doctor of Dental Medicine</option>
+                </optgroup>
+                <optgroup label="College of Computing, Arts and Sciences">
+                  <option value="AB Communication">AB Communication</option>
+                  <option value="AB Psychology">AB Psychology</option>
+                  <option value="BS Psychology">BS Psychology</option>
+                  <option value="Bachelor of Multimedia Arts">Bachelor of Multimedia Arts</option>
+                  <option value="BS Computer Science">BS Computer Science</option>
+                  <option value="BS Information Technology">BS Information Technology</option>
+                </optgroup>
+                <optgroup label="College of Allied Medical Professions">
+                  <option value="BS Biology (Medical Biology)">BS Biology (Medical Biology)</option>
+                  <option value="BS Medical Laboratory Science">BS Medical Laboratory Science</option>
+                  <option value="BS Pharmacy">BS Pharmacy</option>
+                  <option value="BS Physical Therapy">BS Physical Therapy</option>
+                  <option value="BS Radiologic Technology">BS Radiologic Technology</option>
+                </optgroup>
+                <optgroup label="Lyceum International Maritime Academy">
+                  <option value="BS Marine Transportation">BS Marine Transportation</option>
+                  <option value="BS Marine Engineering">BS Marine Engineering</option>
+                </optgroup>
+                <optgroup label="Expanded Tertiary Education Equivalency and Accreditation Program (ETEEAP)">
+                  <option value="ETEEAP - BS Business Administration">BS Business Administration</option>
+                  <option value="ETEEAP - BS Criminology">BS Criminology</option>
+                  <option value="ETEEAP - BS Information Technology">BS Information Technology</option>
+                  <option value="ETEEAP - BS International Hospitality Management">BS International Hospitality Management</option>
+                  <option value="ETEEAP - BS Nursing">BS Nursing</option>
+                </optgroup>
+                <optgroup label="Center for Technical Education">
+                  <option value="Certificate in Culinary Arts">Certificate in Culinary Arts</option>
+                  <option value="Certificate in Pastry Arts">Certificate in Pastry Arts</option>
+                </optgroup>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <i class="ri-arrow-down-s-line text-gray-500"></i>
+              </div>
+            </div>
+          </div>
+          <div id="editSchoolField" class="col-span-2 hidden">
+            <label for="editSchoolName" class="block text-sm font-medium text-gray-700 mb-1">Name of School</label>
+            <input type="text" id="editSchoolName" name="editSchoolName" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+          </div>
+          <div class="col-span-2">
+            <label for="editThesisTitle" class="block text-sm font-medium text-gray-700 mb-1">Title of Thesis</label>
+            <textarea id="editThesisTitle" name="editThesisTitle" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required></textarea>
+          </div>
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button type="button" id="cancelEditBtn" class="bg-gray-100 text-gray-800 px-4 py-2 !rounded-button font-medium hover:bg-gray-200 transition">
+            Cancel
+          </button>
+          <button type="submit" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- View Modal -->
+<div id="viewModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-auto overflow-hidden">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-eye-line mr-2"></i>
+        Research Record Details
+      </h3>
+      <button id="closeViewModalBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-4">
+      <div class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="col-span-2">
+            <h4 class="text-lg font-medium text-gray-800 mb-2">Submission Information</h4>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-600">Submission Date</p>
+                  <p id="viewDate" class="font-medium text-gray-800"></p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">User Type</p>
+                  <p id="viewUserType" class="font-medium text-gray-800"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-span-2">
+            <h4 class="text-lg font-medium text-gray-800 mb-2">Personal Information</h4>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-600">Full Name</p>
+                  <p id="viewName" class="font-medium text-gray-800"></p>
+                </div>
+                <div id="viewStudentNumberContainer">
+                  <p class="text-sm text-gray-600">Student Number</p>
+                  <p id="viewStudentNumber" class="font-medium text-gray-800"></p>
+                </div>
+                <div id="viewCampusContainer">
+                  <p class="text-sm text-gray-600">Campus</p>
+                  <p id="viewCampus" class="font-medium text-gray-800"></p>
+                </div>
+                <div id="viewProgramContainer">
+                  <p class="text-sm text-gray-600">Program/Department</p>
+                  <p id="viewProgram" class="font-medium text-gray-800"></p>
+                </div>
+                <div id="viewSchoolContainer" class="hidden">
+                  <p class="text-sm text-gray-600">School Name</p>
+                  <p id="viewSchool" class="font-medium text-gray-800"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-span-2">
+            <h4 class="text-lg font-medium text-gray-800 mb-2">Research Information</h4>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <div>
+                <p class="text-sm text-gray-600">Thesis Title</p>
+                <p id="viewThesisTitle" class="font-medium text-gray-800"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+      <div class="flex justify-end">
+        <button id="closeViewModalBtn2" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Export Modal -->
+<div id="exportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-download-line mr-2"></i>
+        Export Filtered Records
+      </h3>
+      <button id="closeExportModalBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-4">
+      <div class="mb-6">
+        <p class="text-gray-700 mb-4">Select the format and options for exporting the records:</p>
+        <p id="exportRecordCount" class="text-sm text-primary font-medium mb-4"></p>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Export Format</label>
+            <select id="exportFormat" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option value="pdf">PDF Document</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Include Fields</label>
+            <div class="space-y-2">
+              <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox text-primary" checked>
+                <span class="ml-2 text-gray-700">Date</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox text-primary" checked>
+                <span class="ml-2 text-gray-700">User Type</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox text-primary" checked>
+                <span class="ml-2 text-gray-700">Name</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox text-primary" checked>
+                <span class="ml-2 text-gray-700">Student Number</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox text-primary" checked>
+                <span class="ml-2 text-gray-700">Campus</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox text-primary" checked>
+                <span class="ml-2 text-gray-700">Program/Department</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox text-primary" checked>
+                <span class="ml-2 text-gray-700">School Name</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" class="form-checkbox text-primary" checked>
+                <span class="ml-2 text-gray-700">Thesis Title</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end space-x-4">
+        <button id="cancelExportBtn" class="bg-gray-100 text-gray-800 px-4 py-2 !rounded-button font-medium hover:bg-gray-200 transition">
+          Cancel
+        </button>
+        <button id="confirmExportBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition">
+          Export
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Logout Confirmation Modal -->
+<div id="logoutConfirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-logout-box-line mr-2"></i>
+        Confirm Logout
+      </h3>
+      <button id="closeLogoutModalBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-4">
+      <div class="mb-6">
+        <p class="text-gray-700">Are you sure you want to logout from the admin dashboard?</p>
+      </div>
+      <div class="flex justify-end space-x-4">
+        <button id="cancelLogoutBtn" class="bg-gray-100 text-gray-800 px-4 py-2 !rounded-button font-medium hover:bg-gray-200 transition">
+          Cancel
+        </button>
+        <button id="confirmLogoutBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition">
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Rating Animation (Hidden by default) -->
+<div id="ratingAnimation" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-star-line mr-2"></i>
+        Rate Your Experience
+      </h3>
+      <button id="closeRatingBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-4">
+      <div class="flex flex-col items-center justify-center">
+        <p class="text-gray-700 mb-6">How would you rate your experience with us?</p>
+        <div class="rating-box">
+          <input type="radio" id="rating-5" name="rating" hidden>
+          <label for="rating-5" class="fas fa-star"></label>
+          <input type="radio" id="rating-4" name="rating" hidden>
+          <label for="rating-4" class="fas fa-star"></label>
+          <input type="radio" id="rating-3" name="rating" hidden>
+          <label for="rating-3" class="fas fa-star"></label>
+          <input type="radio" id="rating-2" name="rating" hidden>
+          <label for="rating-2" class="fas fa-star"></label>
+          <input type="radio" id="rating-1" name="rating" hidden>
+          <label for="rating-1" class="fas fa-star"></label>
+          <div class="emojis"></div>
+        </div>
+        <button id="submitRatingBtn" class="mt-16 bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition">
+          Submit Rating
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Thank You Animation (Hidden by default) -->
+<div id="thankYouAnimation" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-emotion-happy-line mr-2"></i>
+        Thank You!
+      </h3>
+      <button id="closeThankYouBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-4 bg-white">
+      <iframe src="thank_u_animation.html" frameborder="0" class="w-full h-96"></iframe>
+      <div class="text-center mt-4">
+        <p class="text-lg font-medium text-gray-800 mb-4">Thank you for your feedback!</p>
+        <button id="closeThankYouBtn2" class="bg-primary text-white px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Achievements Modal (Hidden by default) -->
+<div id="achievementsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-2xl max-w-md w-full mx-auto overflow-hidden" style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 20px 5px rgba(255, 255, 255, 0.3);">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-medal-line mr-2"></i>
+        Your Achievements
+      </h3>
+      <button id="closeAchievementsBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-6 bg-white">
+      <!-- Visit Counter -->
+      <div class="mb-6">
+        <p class="text-lg font-medium text-gray-700 mb-2">Total Visits</p>
+        <div class="flex items-center">
+          <div class="w-10 h-10 flex items-center justify-center text-primary mr-3">
+            <i class="ri-eye-line ri-2x"></i>
+          </div>
+          <span id="achievementVisitCounter" class="text-4xl font-bold text-primary">3</span>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="mb-6">
+        <p class="text-sm text-gray-600 mb-4">Earned Badges</p>
+        <div class="grid grid-cols-3 gap-4">
+          <!-- Bronze Badge -->
+          <div class="relative badge badge-glow badge-bronze-glow rounded-lg p-4 text-center" 
+               style="background: linear-gradient(145deg, #cd7f32, #e9c4a7); transition: transform 0.3s ease;">
+            <div class="w-16 h-16 mx-auto bg-amber-800 rounded-full flex items-center justify-center mb-2">
+              <div class="w-12 h-12 flex items-center justify-center text-white">
+                <i class="ri-medal-line ri-2x badge-icon"></i>
+              </div>
+            </div>
+            <p class="text-sm font-medium text-gray-800">Bronze</p>
+            <p class="text-sm text-gray-600">3 Visits</p>
+          </div>
+          
+          <!-- Silver Badge (Locked) -->
+          <div class="relative badge rounded-lg p-4 text-center bg-gray-100 opacity-60">
+            <div class="w-16 h-16 mx-auto bg-gray-300 rounded-full flex items-center justify-center mb-2">
+              <div class="w-12 h-12 flex items-center justify-center text-white">
+                <i class="ri-lock-line ri-2x badge-icon"></i>
+              </div>
+            </div>
+            <p class="text-sm font-medium text-gray-800">Silver</p>
+            <p class="text-sm text-gray-600">6 Visits</p>
+          </div>
+          
+          <!-- Gold Badge (Locked) -->
+          <div class="relative badge rounded-lg p-4 text-center bg-gray-100 opacity-60">
+            <div class="w-16 h-16 mx-auto bg-gray-300 rounded-full flex items-center justify-center mb-2">
+              <div class="w-12 h-12 flex items-center justify-center text-white">
+                <i class="ri-lock-line ri-2x badge-icon"></i>
+              </div>
+            </div>
+            <p class="text-sm font-medium text-gray-800">Gold</p>
+            <p class="text-sm text-gray-600">10 Visits</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Tips -->
+      <div>
+        <h3 class="text-lg font-medium text-gray-800 mb-4">Quick Tips</h3>
+        <ul class="space-y-3">
+          <li class="flex">
+            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2 flex-shrink-0 mt-0.5">
+              <i class="ri-checkbox-circle-line"></i>
+            </div>
+            <p class="text-sm text-gray-600">Complete all fields for faster approval</p>
+          </li>
+          <li class="flex">
+            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2 flex-shrink-0 mt-0.5">
+              <i class="ri-checkbox-circle-line"></i>
+            </div>
+            <p class="text-sm text-gray-600">Ensure your thesis title is accurate and complete</p>
+          </li>
+          <li class="flex">
+            <div class="w-6 h-6 flex items-center justify-center text-primary mr-2 flex-shrink-0 mt-0.5">
+              <i class="ri-checkbox-circle-line"></i>
+            </div>
+            <p class="text-sm text-gray-600">Return regularly to earn more badges</p>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="mt-6 text-center">
+        <button id="closeAchievementsBtn2" class="bg-primary text-white px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
