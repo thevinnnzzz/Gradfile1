@@ -861,6 +861,45 @@ const dateFilter = document.getElementById('dateFilter');
 const userTypeFilter = document.getElementById('userTypeFilter');
 const campusFilter = document.getElementById('campusFilter');
 
+// Helper function to calculate column widths for PDF export
+function generateColumnStyles(headers, data) {
+  const columnStyles = {};
+  
+  // Calculate the total available width for all columns (subtract margins)
+  const availableWidth = 190; // Approximate available width in PDF document in mm
+  
+  // Calculate column content lengths
+  const contentLengths = [];
+  
+  // Check headers
+  headers.forEach((header, index) => {
+    contentLengths[index] = String(header).length;
+  });
+  
+  // Check all data rows
+  data.forEach(row => {
+    row.forEach((cell, index) => {
+      const cellLength = String(cell || '').length;
+      contentLengths[index] = Math.max(contentLengths[index] || 0, cellLength);
+    });
+  });
+  
+  // Calculate total content length
+  const totalContentLength = contentLengths.reduce((sum, length) => sum + length, 0);
+  
+  // Distribute available width proportionally based on content length
+  contentLengths.forEach((length, index) => {
+    // Calculate proportional width (min 15, max 60)
+    const proportion = length / totalContentLength;
+    const width = Math.max(15, Math.min(60, proportion * availableWidth));
+    
+    // Assign to column styles
+    columnStyles[index] = { cellWidth: width };
+  });
+  
+  return columnStyles;
+}
+
 // Update the filterSubmissions function to include new filters
 function filterSubmissions() {
   const searchTerm = searchInput.value.toLowerCase();
@@ -1032,9 +1071,6 @@ cancelExportBtn.addEventListener('click', closeExportModal);
 // Handle export confirmation
 confirmExportBtn.addEventListener('click', function() {
   try {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
     // Get selected fields
     const selectedFields = Array.from(document.querySelectorAll('#exportModal input[type="checkbox"]:checked')).map(cb => 
       cb.nextElementSibling.textContent.trim()
@@ -1058,20 +1094,14 @@ confirmExportBtn.addEventListener('click', function() {
       return row;
     });
     
-    // Add title
-    doc.setFontSize(16);
+    // Get filter information
     const searchTerm = searchInput.value;
     const selectedDate = dateFilter.value;
     const selectedUserType = userTypeFilter.value;
     const selectedCampus = campusFilter.value;
     const title = (searchTerm || selectedDate || selectedUserType !== 'all' || selectedCampus !== 'all') ? 'Filtered Research Records Export' : 'Research Records Export';
-    doc.text(title, 14, 15);
     
-    // Add date and filter info
-    doc.setFontSize(10);
-    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 25);
-    
-    // Add filter information
+    // Build filter information text
     let filterInfo = '';
     if (searchTerm) {
       const selectedField = searchField.value;
@@ -1086,41 +1116,96 @@ confirmExportBtn.addEventListener('click', function() {
     if (selectedCampus !== 'all') {
       filterInfo += filterInfo ? `, Campus: ${selectedCampus}` : `Campus: ${selectedCampus}`;
     }
+
+    // Check export format selection
+    const exportType = exportFormat.value;
     
-    if (filterInfo) {
-      doc.text(`Filters applied: ${filterInfo}`, 14, 30);
-      doc.text(`Records found: ${filteredSubmissions.length}`, 14, 35);
-    }
-    
-    // Add table
-    doc.autoTable({
-      head: [headers],
-      body: data,
-      startY: filterInfo ? 45 : 35,
-      theme: 'grid',
-      headStyles: {
-        fillColor: [191, 47, 47], // Primary color
-        textColor: 255,
-        fontStyle: 'bold'
-      },
-      styles: {
-        fontSize: 8,
-        cellPadding: 2
-      },
-      columnStyles: {
-        0: { cellWidth: 20 },
-        1: { cellWidth: 20 },
-        2: { cellWidth: 30 },
-        3: { cellWidth: 20 },
-        4: { cellWidth: 30 },
-        5: { cellWidth: 30 },
-        6: { cellWidth: 40 }
+    if (exportType === 'pdf') {
+      // PDF Export
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      // Add title
+      doc.setFontSize(16);
+      doc.text(title, 14, 15);
+      
+      // Add date and filter info
+      doc.setFontSize(10);
+      doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 25);
+      
+      // Add filter information
+      if (filterInfo) {
+        doc.text(`Filters applied: ${filterInfo}`, 14, 30);
+        doc.text(`Records found: ${filteredSubmissions.length}`, 14, 35);
       }
-    });
-    
-    // Save the PDF with appropriate filename
-    const filename = filterInfo ? 'filtered_research_records.pdf' : 'research_records_export.pdf';
-    doc.save(filename);
+      
+      // Add table
+      doc.autoTable({
+        head: [headers],
+        body: data,
+        startY: filterInfo ? 45 : 35,
+        theme: 'grid',
+        headStyles: {
+          fillColor: [191, 47, 47], // Primary color
+          textColor: 255,
+          fontStyle: 'bold'
+        },
+        styles: {
+          fontSize: 8,
+          cellPadding: 2
+        },
+        columnStyles: generateColumnStyles(headers, data),
+        didDrawPage: function(data) {
+          // Add page number at the bottom
+          const pageCount = doc.internal.getNumberOfPages();
+          doc.setFontSize(8);
+          doc.text(`Page ${data.pageNumber} of ${pageCount}`, data.settings.margin.left, doc.internal.pageSize.height - 10);
+        }
+      });
+      
+      // Save the PDF with appropriate filename
+      const filename = filterInfo ? 'filtered_research_records.pdf' : 'research_records_export.pdf';
+      doc.save(filename);
+    } else if (exportType === 'excel') {
+      // Excel Export
+      const xlsx = window.XLSX;
+      
+      // Create worksheet with headers
+      const ws = xlsx.utils.aoa_to_sheet([headers, ...data]);
+      
+      // Auto-size columns
+      const colWidths = [];
+      
+      // First calculate maximum width needed for each column
+      [headers, ...data].forEach(row => {
+        row.forEach((cell, i) => {
+          const cellValue = String(cell || '');
+          // Approximate width based on character count
+          const cellWidth = Math.max(cellValue.length, 10); // minimum 10 characters
+          colWidths[i] = Math.max(colWidths[i] || 0, cellWidth);
+        });
+      });
+      
+      // Apply column widths
+      ws['!cols'] = colWidths.map(width => ({ wch: width + 2 })); // +2 for padding
+      
+      // Create workbook and add the worksheet
+      const wb = xlsx.utils.book_new();
+      xlsx.utils.book_append_sheet(wb, ws, 'Research Records');
+      
+      // Add metadata
+      wb.Props = {
+        Title: title,
+        Subject: "Research Records",
+        CreatedDate: new Date()
+      };
+      
+      // Generate filename
+      const filename = filterInfo ? 'filtered_research_records.xlsx' : 'research_records_export.xlsx';
+      
+      // Save the file
+      xlsx.writeFile(wb, filename);
+    }
     
     // Close the modal
     closeExportModal();
