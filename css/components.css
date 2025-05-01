@@ -1,0 +1,142 @@
+/* 
+ * Component Styles
+ * Contains styles for specific UI components like buttons, badges, etc.
+ */
+
+/* Buttons and color variants */
+.bg-primary, .bg-red-600, .bg-red-500 {
+  background-color: var(--primary-color) !important;
+  transition: background-color 0.3s ease;
+}
+
+.bg-green-500, .bg-green-600 {
+  background-color: var(--success-color) !important;
+  transition: background-color 0.3s ease;
+}
+
+.bg-blue-500, .bg-blue-600 {
+  background-color: var(--info-color) !important;
+  transition: background-color 0.3s ease;
+}
+
+.bg-yellow-500, .bg-yellow-600 {
+  background-color: var(--warning-color) !important;
+  transition: background-color 0.3s ease;
+}
+
+/* Text color variants */
+.text-primary, .text-red-500, .text-red-600, .text-red-700 {
+  color: var(--primary-color) !important;
+  transition: color 0.3s ease;
+}
+
+.text-blue-500, .text-blue-600, .text-blue-700, .text-indigo-500, .text-indigo-600, .text-indigo-700 {
+  color: var(--blue-icon) !important;
+  transition: color 0.3s ease;
+}
+
+.text-green-500, .text-green-600, .text-green-700 {
+  color: var(--green-icon) !important;
+  transition: color 0.3s ease;
+}
+
+.text-yellow-500, .text-yellow-600, .text-yellow-700 {
+  color: var(--warning-color) !important;
+  transition: color 0.3s ease;
+}
+
+/* Border color variants */
+.border-primary, .border-red-500, .border-red-600 {
+  border-color: var(--primary-color) !important;
+  transition: border-color 0.3s ease;
+}
+
+/* Radio buttons */
+.custom-radio input[type="radio"] {
+  display: none;
+}
+
+.custom-radio .radio-mark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--radio-border);
+  position: relative;
+  margin-right: 8px;
+  vertical-align: middle;
+  transition: all 0.2s ease;
+}
+
+.custom-radio input[type="radio"]:checked + .radio-mark {
+  border-color: var(--radio-checked);
+}
+
+.custom-radio input[type="radio"]:checked + .radio-mark:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--radio-checked);
+}
+
+/* Buttons */
+.bg-primary, button[type="submit"], #adminExportBtn, .hover\:bg-opacity-90:hover,
+.btn-primary, .bg-red-500, .bg-red-600, .bg-red-700 {
+  background-color: var(--red-button) !important;
+  color: white !important;
+  transition: background-color 0.3s ease;
+}
+
+/* Icons */
+.ri-eye-line, .text-indigo-600, .text-blue-600 {
+  color: var(--blue-icon) !important;
+}
+
+.ri-edit-line, .text-yellow-600, .text-green-600 {
+  color: var(--green-icon) !important;
+}
+
+.ri-delete-bin-line, .text-red-600 {
+  color: var(--primary-color) !important;
+}
+
+/* Badge styles */
+.badge-bronze {
+  background: var(--badge-bronze);
+}
+
+.badge-silver {
+  background: var(--badge-silver);
+}
+
+.badge-gold {
+  background: var(--badge-gold);
+}
+
+/* Form submit button glow */
+.submit-btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-btn-glow::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  animation: submit-btn-shine 3s infinite;
+}

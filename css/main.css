@@ -1,0 +1,27 @@
+/* 
+ * Main CSS File
+ * Imports all modular CSS files in the correct order
+ */
+
+/* Import theme variables first */
+@import 'theme.css';
+
+/* Import base styles */
+@import 'base.css';
+
+/* Import component styles */
+@import 'components.css';
+
+/* Import animations */
+@import 'animations.css';
+
+/* Import theme switcher styles */
+@import 'theme-switcher.css';
+
+/* 
+ * This file serves as the main entry point for all CSS styles.
+ * It imports all modular CSS files in the correct order to ensure proper cascading.
+ * 
+ * To use these styles, simply include this file in your HTML:
+ * <link rel="stylesheet" href="css/main.css">
+ */
