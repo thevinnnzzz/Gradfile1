@@ -236,11 +236,16 @@ function saveSubmissions() {
 document.addEventListener('DOMContentLoaded', function() {
   const isAdminLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
   const profileDropdownContainer = document.getElementById('profileDropdownContainer');
+  const tutorialBtn = document.getElementById('tutorialBtn');
   
   if (isAdminLoggedIn) {
     adminDashboard.classList.remove('hidden');
     document.getElementById('submissionForm').classList.add('hidden');
     adminLoginBtn.classList.add('hidden');
+    // Hide tutorial button in admin mode
+    if (tutorialBtn) {
+      tutorialBtn.classList.add('hidden');
+    }
     // Show profile dropdown in header
     if (profileDropdownContainer) {
       profileDropdownContainer.classList.remove('hidden');
@@ -410,25 +415,23 @@ adminLoginForm.addEventListener('submit', function(e) {
   
   // Check credentials
   if (username === 'slrclpubatangasmain' && password === 'slrclpubatangasmain') {
-    adminLoginModal.classList.add('hidden');
-    adminDashboard.classList.remove('hidden');
-    document.getElementById('submissionForm').classList.add('hidden');
-    adminLoginBtn.classList.add('hidden');
+    // Save admin login state before reloading
+    localStorage.setItem('adminLoggedIn', 'true');
     
-    // Show profile dropdown in header
-    const profileDropdownContainer = document.getElementById('profileDropdownContainer');
-    if (profileDropdownContainer) {
-      profileDropdownContainer.classList.remove('hidden');
-    }
-    
+    // Reset form and hide error message
     adminLoginForm.reset();
     loginError.classList.add('hidden');
     
-    // Save admin login state
-    localStorage.setItem('adminLoggedIn', 'true');
+    // Show a brief success message
+    const successMessage = document.createElement('div');
+    successMessage.className = 'text-green-500 text-sm mt-2';
+    successMessage.innerHTML = '<i class="ri-check-line mr-1"></i>Login successful! Loading admin dashboard...';
+    loginError.parentNode.insertBefore(successMessage, loginError.nextSibling);
     
-    // Update table with current submissions
-    updateAdminTable();
+    // Reload the page after a short delay to show the success message
+    setTimeout(function() {
+      window.location.reload();
+    }, 1000);
   } else {
     loginError.textContent = 'Invalid username or password. Please try again.';
     loginError.classList.remove('hidden');
@@ -455,6 +458,12 @@ function performLogout() {
   adminDashboard.classList.add('hidden');
   document.getElementById('submissionForm').classList.remove('hidden');
   adminLoginBtn.classList.remove('hidden');
+  
+  // Show tutorial button when returning to user mode
+  const tutorialBtn = document.getElementById('tutorialBtn');
+  if (tutorialBtn) {
+    tutorialBtn.classList.remove('hidden');
+  }
   
   // Hide profile dropdown in header
   const profileDropdownContainer = document.getElementById('profileDropdownContainer');

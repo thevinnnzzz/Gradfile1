@@ -12,12 +12,47 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Anonymous+Pro" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="css/main.css">
 <style>
+/* Typewriter Animation */
+.typewriter-container {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid #BF2F2F;
+  white-space: nowrap;
+  margin: 0;
+  letter-spacing: 0.15em;
+  font-family: 'Anonymous Pro', monospace;
+  width: 0;
+  animation: 
+    typewriter 5s steps(8, end) 0s infinite,
+    blinkingCursor 500ms steps(44) infinite normal;
+  display: inline-block;
+  padding: 0 10px;
+}
+
+@keyframes typewriter {
+  0% { width: 0; }
+  30% { width: 220px; }
+  70% { width: 220px; }
+  100% { width: 0; }
+}
+
+@keyframes blinkingCursor {
+  from { border-right-color: #BF2F2F; }
+  to { border-right-color: transparent; }
+}
+
 /* Star Rating Styles */
 .rating-box {
     gap: 20px;
@@ -269,13 +304,20 @@ input:checked~label {
 <header class="bg-white text-primary shadow-md">
 <div class="container mx-auto px-4 py-4 flex justify-between items-center">
 <div class="flex items-center">
-<img src="https://static.readdy.ai/image/2610098eb4b7d6791c922033875fe1ac/cb8d8ce12e7b02e44cac157a69c7b894.png" alt="LPU Logo" class="h-12 mr-3">
-<span class="hidden md:inline-block text-lg font-medium">Undergraduate School Research Collection</span>
+<img src="https://static.readdy.ai/image/2610098eb4b7d6791c922033875fe1ac/cb8d8ce12e7b02e44cac157a69c7b894.png" alt="LPU Logo" class="h-16 mr-5">
+<div class="typewriter-container md:block">
+  <h1 class="typewriter text-4xl font-bold text-primary" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1); min-width: 220px;">GradFile</h1>
+</div>
 </div>
 
 <!-- Login Button / Profile Dropdown -->
 <div class="flex items-center">
   <div class="flex space-x-3">
+    <!-- Tutorial Button -->
+    <button id="tutorialBtn" class="bg-blue-600 text-white px-4 py-2 !rounded-button font-medium hover:bg-blue-700 transition whitespace-nowrap flex items-center">
+      <i class="ri-video-line mr-2"></i>
+      Tutorial
+    </button>
     <!-- Login Button (visible when logged out) -->
     <button id="adminLoginBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">Admin Login</button>
     
@@ -597,11 +639,6 @@ Login
           </a>
         </li>
         <li class="mr-2">
-          <a href="#" id="materialsTabBtn" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg">
-            <i class="ri-book-open-line mr-2"></i>Research Materials
-          </a>
-        </li>
-        <li class="mr-2">
           <a href="#" id="statisticsTabBtn" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg">
             <i class="ri-bar-chart-line mr-2"></i>Statistics
           </a>
@@ -691,196 +728,7 @@ Login
     </div>
   </div>
 
-  <!-- Materials Tab Content -->
-  <div id="materialsTabContent" class="hidden">
-    <div class="flex justify-between items-center mb-6">
-      <h3 class="text-lg font-medium text-gray-800">Research Materials Repository</h3>
-      <button id="addMaterialBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition flex items-center">
-        <i class="ri-add-line mr-2"></i>
-        Add New Material
-      </button>
-    </div>
-    
-    <!-- Materials Categories -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
-        <div class="flex items-center mb-4">
-          <div class="bg-blue-100 p-3 rounded-full mr-4">
-            <i class="ri-book-2-line text-blue-600 text-2xl"></i>
-          </div>
-          <h4 class="text-lg font-medium">Research Guides</h4>
-        </div>
-        <p class="text-gray-600 mb-4">Comprehensive guides on research methodologies, academic writing, and citation styles.</p>
-        <span class="text-sm text-gray-500">12 resources</span>
-      </div>
-      
-      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
-        <div class="flex items-center mb-4">
-          <div class="bg-green-100 p-3 rounded-full mr-4">
-            <i class="ri-file-paper-2-line text-green-600 text-2xl"></i>
-          </div>
-          <h4 class="text-lg font-medium">Templates & Forms</h4>
-        </div>
-        <p class="text-gray-600 mb-4">Standardized templates for research proposals, ethics applications, and consent forms.</p>
-        <span class="text-sm text-gray-500">8 resources</span>
-      </div>
-      
-      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
-        <div class="flex items-center mb-4">
-          <div class="bg-purple-100 p-3 rounded-full mr-4">
-            <i class="ri-database-2-line text-purple-600 text-2xl"></i>
-          </div>
-          <h4 class="text-lg font-medium">Data Resources</h4>
-        </div>
-        <p class="text-gray-600 mb-4">Access to datasets, statistical tools, and data analysis resources for research projects.</p>
-        <span class="text-sm text-gray-500">15 resources</span>
-      </div>
-    </div>
-    
-    <!-- Materials List -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-      <div class="p-4 bg-gray-50 border-b border-gray-200">
-        <h4 class="font-medium text-gray-700">All Research Materials</h4>
-      </div>
-      
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-          <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Added Date</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Downloads</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-          <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <i class="ri-file-pdf-line text-red-500 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                  <div class="text-sm font-medium text-gray-900">APA Citation Style Guide</div>
-                  <div class="text-sm text-gray-500">Comprehensive guide to APA 7th edition</div>
-                </div>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Research Guides</span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PDF Document</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">April 15, 2025</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">342</td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex space-x-2">
-                <button class="text-indigo-600 hover:text-indigo-900"><i class="ri-eye-line"></i></button>
-                <button class="text-blue-600 hover:text-blue-900"><i class="ri-download-line"></i></button>
-                <button class="text-yellow-600 hover:text-yellow-900"><i class="ri-edit-line"></i></button>
-                <button class="text-red-600 hover:text-red-900"><i class="ri-delete-bin-line"></i></button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <i class="ri-file-word-line text-blue-500 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                  <div class="text-sm font-medium text-gray-900">Research Proposal Template</div>
-                  <div class="text-sm text-gray-500">Standard format for graduate research proposals</div>
-                </div>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Templates & Forms</span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Word Document</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">March 28, 2025</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">189</td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex space-x-2">
-                <button class="text-indigo-600 hover:text-indigo-900"><i class="ri-eye-line"></i></button>
-                <button class="text-blue-600 hover:text-blue-900"><i class="ri-download-line"></i></button>
-                <button class="text-yellow-600 hover:text-yellow-900"><i class="ri-edit-line"></i></button>
-                <button class="text-red-600 hover:text-red-900"><i class="ri-delete-bin-line"></i></button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <i class="ri-file-excel-line text-green-500 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                  <div class="text-sm font-medium text-gray-900">Statistical Analysis Toolkit</div>
-                  <div class="text-sm text-gray-500">Excel-based tools for research data analysis</div>
-                </div>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Data Resources</span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Excel Workbook</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">April 22, 2025</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">127</td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex space-x-2">
-                <button class="text-indigo-600 hover:text-indigo-900"><i class="ri-eye-line"></i></button>
-                <button class="text-blue-600 hover:text-blue-900"><i class="ri-download-line"></i></button>
-                <button class="text-yellow-600 hover:text-yellow-900"><i class="ri-edit-line"></i></button>
-                <button class="text-red-600 hover:text-red-900"><i class="ri-delete-bin-line"></i></button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <i class="ri-file-pdf-line text-red-500 text-xl"></i>
-                </div>
-                <div class="ml-4">
-                  <div class="text-sm font-medium text-gray-900">Literature Review Guidelines</div>
-                  <div class="text-sm text-gray-500">Best practices for conducting literature reviews</div>
-                </div>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Research Guides</span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PDF Document</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">April 10, 2025</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">215</td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex space-x-2">
-                <button class="text-indigo-600 hover:text-indigo-900"><i class="ri-eye-line"></i></button>
-                <button class="text-blue-600 hover:text-blue-900"><i class="ri-download-line"></i></button>
-                <button class="text-yellow-600 hover:text-yellow-900"><i class="ri-edit-line"></i></button>
-                <button class="text-red-600 hover:text-red-900"><i class="ri-delete-bin-line"></i></button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-        <div class="text-sm text-gray-700">
-          Showing <span class="font-medium">1</span> to <span class="font-medium">4</span> of <span class="font-medium">24</span> resources
-        </div>
-        <div class="flex space-x-2">
-          <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-            Previous
-          </button>
-          <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-            Next
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+
 
   <!-- Statistics Tab Content -->
   <div id="statisticsTabContent" class="hidden">
@@ -1698,6 +1546,50 @@ Login
   </div>
 </div>
 
+<!-- Export Statistics Modal (Hidden by default) -->
+<div id="exportStatsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-download-line mr-2"></i>
+        Export Analytics Report
+      </h3>
+      <button id="closeStatsExportBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-6 bg-white">
+      <p class="text-gray-600 mb-6">Select the format to export your analytics report:</p>
+      
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <!-- PDF Export Option -->
+        <div id="exportStatsPdfBtn" class="cursor-pointer bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition">
+          <div class="w-12 h-12 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-3">
+            <i class="ri-file-pdf-line text-red-600 text-2xl"></i>
+          </div>
+          <h4 class="text-sm font-medium text-gray-800">PDF Document</h4>
+          <p class="text-xs text-gray-500 mt-1">Export as PDF file</p>
+        </div>
+        
+        <!-- Excel Export Option -->
+        <div id="exportStatsExcelBtn" class="cursor-pointer bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition">
+          <div class="w-12 h-12 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-3">
+            <i class="ri-file-excel-line text-green-600 text-2xl"></i>
+          </div>
+          <h4 class="text-sm font-medium text-gray-800">Excel Spreadsheet</h4>
+          <p class="text-xs text-gray-500 mt-1">Export as XLSX file</p>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <button id="cancelStatsExportBtn" class="bg-gray-100 text-gray-800 px-6 py-2 !rounded-button font-medium hover:bg-gray-200 transition">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="script.js"></script>
   
   <!-- ECharts Library -->
@@ -1712,6 +1604,374 @@ Login
         initUserDistributionChart();
       }, 100);
     });
+    
+    // Statistics Export Button Functionality
+    const exportStatsBtn = document.getElementById('exportStatsBtn');
+    const exportStatsModal = document.getElementById('exportStatsModal');
+    const closeStatsExportBtn = document.getElementById('closeStatsExportBtn');
+    const cancelStatsExportBtn = document.getElementById('cancelStatsExportBtn');
+    const exportStatsPdfBtn = document.getElementById('exportStatsPdfBtn');
+    const exportStatsExcelBtn = document.getElementById('exportStatsExcelBtn');
+    
+    if (exportStatsBtn) {
+      exportStatsBtn.addEventListener('click', function() {
+        exportStatsModal.classList.remove('hidden');
+      });
+    }
+    
+    if (closeStatsExportBtn) {
+      closeStatsExportBtn.addEventListener('click', function() {
+        exportStatsModal.classList.add('hidden');
+      });
+    }
+    
+    if (cancelStatsExportBtn) {
+      cancelStatsExportBtn.addEventListener('click', function() {
+        exportStatsModal.classList.add('hidden');
+      });
+    }
+    
+    // Export Statistics to PDF
+    if (exportStatsPdfBtn) {
+      exportStatsPdfBtn.addEventListener('click', function() {
+        // Create PDF document with legal paper size (8.5 x 14 inches)
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+          orientation: 'portrait',
+          unit: 'pt',
+          format: 'legal' // 8.5 x 14 inches (long paper size)
+        });
+        let currentY = 50; // Track vertical position
+        const margin = 50; // Left margin
+        const pageWidth = doc.internal.pageSize.width;
+        const pageHeight = doc.internal.pageSize.height; // Legal size height (1008 points)
+        
+        // Add title and date
+        const timeRange = document.getElementById('statisticsTimeRange').value;
+        let timeRangeText = 'Last 30 days';
+        if (timeRange === 'week') timeRangeText = 'Last 7 days';
+        if (timeRange === 'quarter') timeRangeText = 'Last 3 months';
+        if (timeRange === 'year') timeRangeText = 'Last 12 months';
+        
+        // Title and header
+        doc.setFontSize(24);
+        doc.setTextColor(191, 47, 47); // Primary color
+        doc.text('Research Analytics Report', pageWidth / 2, currentY, { align: 'center' });
+        currentY += 40;
+        
+        doc.setFontSize(14);
+        doc.setTextColor(80, 80, 80); // Dark gray
+        doc.text(`Time Period: ${timeRangeText}`, pageWidth / 2, currentY, { align: 'center' });
+        currentY += 20;
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, pageWidth / 2, currentY, { align: 'center' });
+        currentY += 50;
+        
+        // Add summary statistics
+        doc.setFontSize(18);
+        doc.setTextColor(60, 60, 60); // Darker gray for section headers
+        doc.text('Summary Statistics', margin, currentY);
+        currentY += 25;
+        doc.setFontSize(12);
+        
+        // Create a table for the summary statistics
+        const summaryData = [
+          ['Total Submissions', '1,248', '+12.5%'],
+          ['LPU Students', '876', '+8.3%'],
+          ['External Users', '372', '+18.7%'],
+          ['Downloads', '3,542', '+24.2%']
+        ];
+        
+        doc.autoTable({
+          startY: currentY,
+          head: [['Metric', 'Value', 'Change']],
+          body: summaryData,
+          theme: 'grid',
+          headStyles: { fillColor: [191, 47, 47], textColor: [255, 255, 255] },
+          styles: { fontSize: 12 },
+          margin: { left: margin }
+        });
+        
+        currentY = doc.lastAutoTable.finalY + 40;
+        
+        // Check if need to add a new page
+        if (currentY > pageHeight - 150) { // If close to bottom of legal page
+          doc.addPage();
+          currentY = 50;
+        }
+        
+        // Add Submission Trends Chart
+        doc.setFontSize(18);
+        doc.setTextColor(60, 60, 60);
+        doc.text('Submission Trends', margin, currentY);
+        currentY += 25;
+        
+        // Get the chart canvas and convert to image
+        const submissionTrendsChart = document.getElementById('submissionTrendsChart');
+        if (submissionTrendsChart) {
+          // Get chart instance
+          const chartInstance = echarts.getInstanceByDom(submissionTrendsChart);
+          if (chartInstance) {
+            // Convert chart to data URL
+            const chartDataURL = chartInstance.getDataURL({
+              type: 'png',
+              pixelRatio: 2,
+              backgroundColor: '#fff'
+            });
+            
+            // Add chart image to PDF
+            const chartWidth = 500;
+            const chartHeight = 250;
+            doc.addImage(
+              chartDataURL, 
+              'PNG', 
+              margin, 
+              currentY, 
+              chartWidth, 
+              chartHeight
+            );
+            currentY += chartHeight + 40;
+          }
+        }
+        
+        // Check if need to add a new page
+        if (currentY > pageHeight - 150) { // If close to bottom of legal page
+          doc.addPage();
+          currentY = 50;
+        }
+        
+        // Add User Distribution Chart
+        doc.setFontSize(18);
+        doc.setTextColor(60, 60, 60);
+        doc.text('User Distribution', margin, currentY);
+        currentY += 25;
+        
+        // Get the user distribution chart canvas and convert to image
+        const userDistributionChart = document.getElementById('userDistributionChart');
+        if (userDistributionChart) {
+          // Get chart instance
+          const chartInstance = echarts.getInstanceByDom(userDistributionChart);
+          if (chartInstance) {
+            // Convert chart to data URL
+            const chartDataURL = chartInstance.getDataURL({
+              type: 'png',
+              pixelRatio: 2,
+              backgroundColor: '#fff'
+            });
+            
+            // Add chart image to PDF
+            const chartWidth = 500;
+            const chartHeight = 250;
+            doc.addImage(
+              chartDataURL, 
+              'PNG', 
+              margin, 
+              currentY, 
+              chartWidth, 
+              chartHeight
+            );
+            currentY += chartHeight + 40;
+          }
+        }
+        
+        // Check if need to add a new page
+        if (currentY > pageHeight - 150) { // If close to bottom of legal page
+          doc.addPage();
+          currentY = 50;
+        }
+        
+        // Add popular research topics
+        doc.setFontSize(18);
+        doc.setTextColor(60, 60, 60);
+        doc.text('Popular Research Topics', margin, currentY);
+        currentY += 25;
+        
+        const topicsData = [
+          ['Computer Science', '28%'],
+          ['Business Admin', '22%'],
+          ['Nursing', '18%'],
+          ['Psychology', '15%'],
+          ['Tourism', '12%']
+        ];
+        
+        doc.autoTable({
+          startY: currentY,
+          head: [['Topic', 'Percentage']],
+          body: topicsData,
+          theme: 'grid',
+          headStyles: { fillColor: [191, 47, 47], textColor: [255, 255, 255] },
+          styles: { fontSize: 12 },
+          margin: { left: margin }
+        });
+        
+        currentY = doc.lastAutoTable.finalY + 40;
+        
+        // Check if need to add a new page
+        if (currentY > pageHeight - 150) { // If close to bottom of legal page
+          doc.addPage();
+          currentY = 50;
+        }
+        
+        // Add most active users
+        doc.setFontSize(18);
+        doc.setTextColor(60, 60, 60);
+        doc.text('Most Active Users', margin, currentY);
+        currentY += 25;
+        
+        const usersData = [
+          ['Michael Johnson', 'Computer Science', '42 submissions'],
+          ['Emily Rodriguez', 'Psychology', '38 submissions'],
+          ['David Thompson', 'Business Admin', '35 submissions'],
+          ['Sarah Williams', 'Nursing', '29 submissions'],
+          ['Robert Chen', 'Engineering', '24 submissions']
+        ];
+        
+        doc.autoTable({
+          startY: currentY,
+          head: [['Name', 'Department', 'Activity']],
+          body: usersData,
+          theme: 'grid',
+          headStyles: { fillColor: [191, 47, 47], textColor: [255, 255, 255] },
+          styles: { fontSize: 12 },
+          margin: { left: margin }
+        });
+        
+        // Add footer
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+          doc.setPage(i);
+          doc.setFontSize(10);
+          doc.setTextColor(150, 150, 150);
+          doc.text(
+            `Page ${i} of ${totalPages} - Generated by Graduate School Research Collection`,
+            pageWidth / 2,
+            pageHeight - 30,
+            { align: 'center' }
+          );
+        }
+        
+        // Save the PDF
+        doc.save('research-analytics-report.pdf');
+        
+        // Close the modal after export
+        exportStatsModal.classList.add('hidden');
+      });
+    }
+    
+    // Export Statistics to Excel
+    if (exportStatsExcelBtn) {
+      exportStatsExcelBtn.addEventListener('click', function() {
+        // Create workbook
+        const wb = XLSX.utils.book_new();
+        
+        // Get time range
+        const timeRange = document.getElementById('statisticsTimeRange').value;
+        let timeRangeText = 'Last 30 days';
+        if (timeRange === 'week') timeRangeText = 'Last 7 days';
+        if (timeRange === 'quarter') timeRangeText = 'Last 3 months';
+        if (timeRange === 'year') timeRangeText = 'Last 12 months';
+        
+        // Summary statistics sheet
+        const summaryData = [
+          ['Research Analytics Report'],
+          [`Time Period: ${timeRangeText}`],
+          [`Generated on: ${new Date().toLocaleDateString()}`],
+          [],
+          ['Summary Statistics'],
+          ['Metric', 'Value', 'Change'],
+          ['Total Submissions', '1,248', '+12.5%'],
+          ['LPU Students', '876', '+8.3%'],
+          ['External Users', '372', '+18.7%'],
+          ['Downloads', '3,542', '+24.2%']
+        ];
+        
+        const summaryWS = XLSX.utils.aoa_to_sheet(summaryData);
+        XLSX.utils.book_append_sheet(wb, summaryWS, 'Summary');
+        
+        // Submission Trends sheet with chart data
+        const trendsData = [
+          ['Submission Trends'],
+          [],
+          ['Day', 'Submissions'],
+          ['Mon', 10],
+          ['Tue', 15],
+          ['Wed', 12],
+          ['Thu', 20],
+          ['Fri', 24],
+          ['Sat', 18],
+          ['Sun', 8]
+        ];
+        
+        const trendsWS = XLSX.utils.aoa_to_sheet(trendsData);
+        
+        // Add chart positioning and properties (this is metadata for Excel to create a chart)
+        // Note: This is a simplified approach - Excel will need to interpret this data to create a chart
+        trendsWS['!charts'] = [{
+          type: 'bar',
+          title: 'Submission Trends',
+          data: { ref: 'A3:B10' },
+          position: { x: 0, y: 15, width: 500, height: 300 }
+        }];
+        
+        XLSX.utils.book_append_sheet(wb, trendsWS, 'Submission Trends');
+        
+        // User Distribution sheet with chart data
+        const distributionData = [
+          ['User Distribution'],
+          [],
+          ['User Type', 'Percentage'],
+          ['LPU Students', 70],
+          ['External Users', 30]
+        ];
+        
+        const distributionWS = XLSX.utils.aoa_to_sheet(distributionData);
+        
+        // Add chart positioning and properties for pie chart
+        distributionWS['!charts'] = [{
+          type: 'pie',
+          title: 'User Distribution',
+          data: { ref: 'A3:B5' },
+          position: { x: 0, y: 15, width: 500, height: 300 }
+        }];
+        
+        XLSX.utils.book_append_sheet(wb, distributionWS, 'User Distribution');
+        
+        // Research topics sheet
+        const topicsData = [
+          ['Popular Research Topics'],
+          [],
+          ['Topic', 'Percentage'],
+          ['Computer Science', '28%'],
+          ['Business Admin', '22%'],
+          ['Nursing', '18%'],
+          ['Psychology', '15%'],
+          ['Tourism', '12%']
+        ];
+        
+        const topicsWS = XLSX.utils.aoa_to_sheet(topicsData);
+        XLSX.utils.book_append_sheet(wb, topicsWS, 'Research Topics');
+        
+        // Active users sheet
+        const usersData = [
+          ['Most Active Users'],
+          [],
+          ['Name', 'Department', 'Activity'],
+          ['Michael Johnson', 'Computer Science', '42 submissions'],
+          ['Emily Rodriguez', 'Psychology', '38 submissions'],
+          ['David Thompson', 'Business Admin', '35 submissions'],
+          ['Sarah Williams', 'Nursing', '29 submissions'],
+          ['Robert Chen', 'Engineering', '24 submissions']
+        ];
+        
+        const usersWS = XLSX.utils.aoa_to_sheet(usersData);
+        XLSX.utils.book_append_sheet(wb, usersWS, 'Active Users');
+        
+        // Save the Excel file
+        XLSX.writeFile(wb, 'research-analytics-report.xlsx');
+        
+        // Close the modal after export
+        exportStatsModal.classList.add('hidden');
+      });
+    }
     
     // Submission Trends Chart
     function initSubmissionTrendsChart() {
@@ -1976,23 +2236,21 @@ Login
     
     // Tab switching for admin dashboard
     const recordsTabBtn = document.getElementById('recordsTabBtn');
-    const materialsTabBtn = document.getElementById('materialsTabBtn');
     const statisticsTabBtn = document.getElementById('statisticsTabBtn');
     const recordsTabContent = document.getElementById('recordsTabContent');
-    const materialsTabContent = document.getElementById('materialsTabContent');
     const statisticsTabContent = document.getElementById('statisticsTabContent');
     
-    if (recordsTabBtn && materialsTabBtn && statisticsTabBtn) {
+    if (recordsTabBtn && statisticsTabBtn) {
       // Function to reset all tabs
       function resetAllTabs() {
         // Reset all tab buttons
-        [recordsTabBtn, materialsTabBtn, statisticsTabBtn].forEach(tab => {
+        [recordsTabBtn, statisticsTabBtn].forEach(tab => {
           tab.classList.remove('border-primary', 'text-primary');
           tab.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
         });
         
         // Hide all tab contents
-        [recordsTabContent, materialsTabContent, statisticsTabContent].forEach(content => {
+        [recordsTabContent, statisticsTabContent].forEach(content => {
           if (content) content.classList.add('hidden');
         });
       }
@@ -2010,18 +2268,7 @@ Login
         recordsTabContent.classList.remove('hidden');
       });
       
-      // Materials Tab
-      materialsTabBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        resetAllTabs();
-        
-        // Activate this tab
-        materialsTabBtn.classList.add('border-primary', 'text-primary');
-        materialsTabBtn.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
-        
-        // Show content
-        materialsTabContent.classList.remove('hidden');
-      });
+
       
       // Statistics Tab
       statisticsTabBtn.addEventListener('click', function(e) {
@@ -2042,14 +2289,7 @@ Login
       recordsTabBtn.click();
     }
     
-    // Add Material Button Functionality
-    const addMaterialBtn = document.getElementById('addMaterialBtn');
-    if (addMaterialBtn) {
-      addMaterialBtn.addEventListener('click', function() {
-        // This would open a modal for adding new research material
-        alert('Add new research material functionality would be implemented here.');
-      });
-    }
+
     
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
@@ -2074,6 +2314,134 @@ Login
         mobileMenu.classList.add('hidden');
       }
     });
+  });
+</script>
+
+<!-- Tutorial Modal -->
+<div id="tutorialModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-auto overflow-hidden">
+    <div class="bg-blue-600 px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-video-line mr-2"></i>
+        GradFile Tutorials
+      </h3>
+      <button id="closeTutorialBtn" class="text-white hover:text-gray-200 transition">
+        <i class="ri-close-line text-2xl"></i>
+      </button>
+    </div>
+    
+    <div class="p-6">
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- Tutorial Navigation -->
+        <div class="md:w-1/4">
+          <div class="bg-gray-50 rounded-lg p-4">
+            <h4 class="text-lg font-medium text-gray-800 mb-4">Available Tutorials</h4>
+            <div class="space-y-2">
+              <button id="formTutorialBtn" class="w-full text-left px-4 py-3 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 transition flex items-center">
+                <i class="ri-file-list-line mr-2"></i>
+                How to Use the Form
+              </button>
+              <button id="promoVideoBtn" class="w-full text-left px-4 py-3 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition flex items-center">
+                <i class="ri-information-line mr-2"></i>
+                About GradFile
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Video Content -->
+        <div class="md:w-3/4">
+          <div id="tutorialVideoContainer" class="bg-white rounded-lg">
+            <!-- Video content will be loaded here dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tutorial Button and Modal Functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const tutorialBtn = document.getElementById('tutorialBtn');
+    const tutorialModal = document.getElementById('tutorialModal');
+    const closeTutorialBtn = document.getElementById('closeTutorialBtn');
+    const formTutorialBtn = document.getElementById('formTutorialBtn');
+    const promoVideoBtn = document.getElementById('promoVideoBtn');
+    const tutorialVideoContainer = document.getElementById('tutorialVideoContainer');
+    
+    if (tutorialBtn && tutorialModal) {
+      tutorialBtn.addEventListener('click', function() {
+        tutorialModal.classList.remove('hidden');
+        // Show form tutorial by default
+        setTimeout(function() {
+          if (formTutorialBtn) formTutorialBtn.click();
+        }, 100);
+      });
+      
+      if (closeTutorialBtn) {
+        closeTutorialBtn.addEventListener('click', function() {
+          tutorialModal.classList.add('hidden');
+          // Pause any playing videos when closing the modal
+          if (tutorialVideoContainer) {
+            const videos = tutorialVideoContainer.querySelectorAll('video');
+            videos.forEach(video => video.pause());
+          }
+        });
+      }
+      
+      // Form Tutorial Button
+      if (formTutorialBtn && tutorialVideoContainer) {
+        formTutorialBtn.addEventListener('click', function() {
+          tutorialVideoContainer.innerHTML = `
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+              <h4 class="text-lg font-medium text-gray-800 mb-2">How to Use the Submission Form</h4>
+              <p class="text-gray-600 mb-4">This tutorial will guide you through the process of submitting your research records.</p>
+            </div>
+            <video controls class="w-full rounded-lg shadow-md" poster="https://via.placeholder.com/800x450.png?text=Form+Tutorial+Video">
+              <source src="https://example.com/form-tutorial.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <div class="mt-4 space-y-2">
+              <h5 class="font-medium text-gray-800">Key Steps:</h5>
+              <ol class="list-decimal list-inside space-y-1 text-gray-700">
+                <li>Select your user type (LPU or Non-LPU Student)</li>
+                <li>Fill in your personal information</li>
+                <li>Enter your research details</li>
+                <li>Upload your research document</li>
+                <li>Submit your record</li>
+              </ol>
+            </div>
+          `;
+        });
+      }
+      
+      // Promotional Video Button
+      if (promoVideoBtn && tutorialVideoContainer) {
+        promoVideoBtn.addEventListener('click', function() {
+          tutorialVideoContainer.innerHTML = `
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+              <h4 class="text-lg font-medium text-gray-800 mb-2">About GradFile</h4>
+              <p class="text-gray-600 mb-4">Learn about the GradFile project and how it benefits the academic community.</p>
+            </div>
+            <video controls class="w-full rounded-lg shadow-md" poster="https://via.placeholder.com/800x450.png?text=GradFile+Promotional+Video">
+              <source src="https://example.com/gradfile-promo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <div class="mt-4 space-y-2">
+              <h5 class="font-medium text-gray-800">GradFile Features:</h5>
+              <ul class="list-disc list-inside space-y-1 text-gray-700">
+                <li>Centralized research repository</li>
+                <li>Easy submission and retrieval</li>
+                <li>Analytics and statistics</li>
+                <li>Secure document storage</li>
+                <li>Academic community engagement</li>
+              </ul>
+            </div>
+          `;
+        });
+      }
+    }
   });
 </script>
 </body>
