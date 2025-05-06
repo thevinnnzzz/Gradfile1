@@ -70,8 +70,8 @@ confirmExportBtn.addEventListener('click', function() {
     doc.setFontSize(16);
     const searchTerm = searchInput.value;
     const selectedDate = dateFilter.value;
-    const title = (searchTerm || selectedDate) ? 'Filtered Researchers\' Records Export' : 'Researchers\' Records Export';
-    doc.text(title, 14, 15);
+    const title = (searchTerm || selectedDate) ? 'Filtered Research Records Export' : 'Researchers\' Records Export';
+    doc.text(c, 14, 15);
     
     // Add date and filter info
     doc.setFontSize(10);
