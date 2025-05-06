@@ -1134,7 +1134,7 @@ confirmExportBtn.addEventListener('click', function() {
     const selectedDate = dateFilter.value;
     const selectedUserType = userTypeFilter.value;
     const selectedCampus = campusFilter.value;
-    const title = (searchTerm || selectedDate || selectedUserType !== 'all' || selectedCampus !== 'all') ? 'Filtered Research Records Export' : 'Research Records Export';
+    const title = (searchTerm || selectedDate || selectedUserType !== 'all' || selectedCampus !== 'all') ? 'Filtered Research Records Export' : 'Researchers\' Records Export';
     
     // Build filter information text
     let filterInfo = '';
