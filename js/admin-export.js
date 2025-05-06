@@ -71,7 +71,7 @@ confirmExportBtn.addEventListener('click', function() {
     const searchTerm = searchInput.value;
     const selectedDate = dateFilter.value;
     const title = (searchTerm || selectedDate) ? 'Filtered Research Records Export' : 'Researchers\' Records Export';
-    doc.text(c, 14, 15);
+    doc.text(title, 14, 15);
     
     // Add date and filter info
     doc.setFontSize(10);
