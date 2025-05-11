@@ -1,0 +1,155 @@
+/* 
+ * Animation Styles
+ * Contains all animations, keyframes, and special effects
+ */
+
+/* Star Rating Animation */
+@keyframes star-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Badge Unlock Glow Animation */
+.badge-glow {
+  animation: badge-pulse 2s infinite alternate;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes badge-pulse {
+  0% {
+    box-shadow: 0 0 0 2px var(--glow-color), 0 0 8px var(--glow-color);
+  }
+  100% {
+    box-shadow: 0 0 0 3px var(--glow-color), 0 0 12px var(--glow-color);
+  }
+}
+
+/* Neon glow effects for badges */
+.badge-bronze-glow {
+  box-shadow: 0 0 5px #fff, 0 0 10px #cd7f32, 0 0 15px #cd7f32, 0 0 20px #cd7f32;
+}
+
+.badge-silver-glow {
+  box-shadow: 0 0 5px #fff, 0 0 10px #c0c0c0, 0 0 15px #c0c0c0, 0 0 20px #c0c0c0;
+}
+
+.badge-gold-glow {
+  box-shadow: 0 0 5px #fff, 0 0 10px #ffd700, 0 0 15px #ffd700, 0 0 20px #ffd700, 0 0 25px #ffd700;
+}
+
+/* Badge icon glow effects */
+.badge-bronze-glow .badge-icon {
+  color: rgba(255, 255, 255, 0.95);
+  animation: icon-glow-bronze 1.5s ease-in-out infinite alternate;
+  font-weight: bold;
+}
+
+.badge-silver-glow .badge-icon {
+  color: rgba(255, 255, 255, 0.95);
+  animation: icon-glow-silver 1.5s ease-in-out infinite alternate;
+  font-weight: bold;
+}
+
+.badge-gold-glow .badge-icon {
+  color: rgba(255, 255, 255, 0.95);
+  animation: icon-glow-gold 1.5s ease-in-out infinite alternate;
+  font-weight: bold;
+}
+
+@keyframes icon-glow-bronze {
+  0% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #cd7f32, 0 0 20px #cd7f32, 0 0 25px #cd7f32, 0 0 30px #cd7f32;
+  }
+  100% {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #cd7f32, 0 0 40px #cd7f32, 0 0 50px #cd7f32, 0 0 60px #cd7f32;
+  }
+}
+
+@keyframes icon-glow-silver {
+  0% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #c0c0c0, 0 0 20px #c0c0c0, 0 0 25px #c0c0c0, 0 0 30px #c0c0c0;
+  }
+  100% {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #c0c0c0, 0 0 40px #c0c0c0, 0 0 50px #c0c0c0, 0 0 60px #c0c0c0;
+  }
+}
+
+@keyframes icon-glow-gold {
+  0% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ffd700, 0 0 20px #ffd700, 0 0 25px #ffd700, 0 0 30px #ffd700;
+  }
+  100% {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffd700, 0 0 40px #ffd700, 0 0 50px #ffd700, 0 0 60px #ffd700;
+  }
+}
+
+/* Submit button shine animation */
+@keyframes submit-btn-shine {
+  0% {
+    left: -50%;
+    top: -50%;
+  }
+  100% {
+    left: 150%;
+    top: 150%;
+  }
+}
+
+/* Thank you animation styles */
+.screen {
+  opacity: 0.25;
+  animation: slide 4s linear infinite;
+}
+
+.star {
+  animation: bounce 4s linear infinite;
+}
+
+.shaddow {
+  transform-origin: center center;
+  animation: bounceShaddow 4s linear infinite;
+}
+
+@keyframes slide {
+  from {
+    transform: translatex(-10%);
+  }
+  to {
+    transform: translatex(100%);
+  }
+}
+
+@keyframes bounce {
+  0%, 40%, 50%, 60%, 100% {
+    transform: translatey(0%);
+  }
+  45% {
+    transform: translatey(-15%);
+  }
+  55% {
+    transform: translatey(-10%);
+  }
+}
+
+@keyframes bounceShaddow {
+  0%, 40%, 50%, 60%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  45% {
+    transform: scale(0.8);
+    opacity: 0.2;
+  }
+  55% {
+    transform: scale(0.9);
+    opacity: 0.3;
+  }
+}

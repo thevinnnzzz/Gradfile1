@@ -1,0 +1,134 @@
+/* 
+ * Base Styles
+ * Contains basic styling for HTML elements and global variables
+ */
+
+/* Base font and spacing */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--body-bg);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Main header */
+.main-header {
+  background-color: var(--header-bg);
+  border-bottom-color: var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.main-header h1 {
+  color: var(--header-text);
+  transition: color 0.3s ease;
+}
+
+/* Background colors */
+.bg-white, .bg-gray-50, .bg-gray-100 {
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease;
+}
+
+.bg-gray-200 {
+  background-color: var(--secondary-bg);
+  transition: background-color 0.3s ease;
+}
+
+/* Text colors */
+.text-gray-400, .text-gray-500, .text-gray-600, .text-gray-700, .text-gray-800, .text-gray-900 {
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.text-gray-300 {
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+/* Border colors */
+.border, .border-gray-100, .border-gray-200, .border-gray-300 {
+  border-color: var(--border-color);
+  transition: border-color 0.3s ease;
+}
+
+/* Shadows */
+.shadow, .shadow-md, .shadow-lg, .shadow-xl {
+  box-shadow: 0 4px 6px var(--shadow-color);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Form elements */
+input, select, textarea, .form-input, .form-select, .form-textarea {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border-color: var(--input-border);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Tables */
+table {
+  border-color: var(--border-color);
+}
+
+thead, th {
+  background-color: var(--table-header-bg) !important;
+  color: var(--text-color);
+}
+
+tr {
+  border-bottom-color: var(--border-color);
+}
+
+tr:hover {
+  background-color: var(--table-row-hover);
+}
+
+td {
+  color: var(--text-color);
+}
+
+/* Cards and containers */
+.rounded, .rounded-lg, .rounded-xl, .card {
+  background-color: var(--card-bg);
+  transition: background-color 0.3s ease;
+}
+
+/* Modals */
+.modal {
+  background-color: var(--modal-overlay);
+}
+
+.modal-content {
+  background-color: var(--modal-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+/* Dropdown menus */
+.dropdown-menu, #profileDropdown, #appearanceSubmenu {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text-color);
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+/* Tabs */
+.tab-active {
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.tab:hover {
+  color: var(--primary-color);
+}

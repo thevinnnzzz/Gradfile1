@@ -2,17 +2,21 @@
 const lpuRadio = document.getElementById('lpuRadio');
 const nonLpuRadio = document.getElementById('nonLpuRadio');
 const lpuFields = document.getElementById('lpuFields');
+const campusField = document.getElementById('campusField');
 const programField = document.getElementById('programField');
 const schoolField = document.getElementById('schoolField');
 const studentNumber = document.getElementById('studentNumber');
+const campus = document.getElementById('campus');
 const program = document.getElementById('program');
 const schoolName = document.getElementById('schoolName');
 lpuRadio.addEventListener('change', function() {
 if (this.checked) {
 lpuFields.classList.remove('hidden');
+campusField.classList.remove('hidden');
 programField.classList.remove('hidden');
 schoolField.classList.add('hidden');
 studentNumber.required = true;
+campus.required = true;
 program.required = true;
 schoolName.required = false;
 }
@@ -22,9 +26,12 @@ if (this.checked) {
 lpuFields.classList.add('hidden');
 programField.classList.add('hidden');
 schoolField.classList.remove('hidden');
+// Keep campus field visible for non-LPU students
+campusField.classList.remove('hidden');
 studentNumber.required = false;
 program.required = false;
 schoolName.required = true;
+campus.required = true; // Campus is required for both user types
 }
 });
 // Form submission
@@ -72,29 +79,14 @@ document.getElementById('submitRatingBtn').addEventListener('click', function() 
 document.getElementById('closeThankYouBtn').addEventListener('click', function() {
   document.getElementById('thankYouAnimation').classList.add('hidden');
   
-  // Show achievements modal after thank you animation
-  document.getElementById('achievementsModal').classList.remove('hidden');
-});
-
-document.getElementById('closeThankYouBtn2').addEventListener('click', function() {
-  document.getElementById('thankYouAnimation').classList.add('hidden');
-  
-  // Show achievements modal after thank you animation
-  document.getElementById('achievementsModal').classList.remove('hidden');
-});
-
-// Close achievements modal buttons
-document.getElementById('closeAchievementsBtn').addEventListener('click', function() {
-  document.getElementById('achievementsModal').classList.add('hidden');
-  
   // Reload the page after closing
   setTimeout(function() {
     window.location.reload();
   }, 300);
 });
 
-document.getElementById('closeAchievementsBtn2').addEventListener('click', function() {
-  document.getElementById('achievementsModal').classList.add('hidden');
+document.getElementById('closeThankYouBtn2').addEventListener('click', function() {
+  document.getElementById('thankYouAnimation').classList.add('hidden');
   
   // Reload the page after closing
   setTimeout(function() {
@@ -228,11 +220,21 @@ function saveSubmissions() {
 // Check if admin is logged in on page load
 document.addEventListener('DOMContentLoaded', function() {
   const isAdminLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+  const profileDropdownContainer = document.getElementById('profileDropdownContainer');
+  const tutorialBtn = document.getElementById('tutorialBtn');
+  
   if (isAdminLoggedIn) {
     adminDashboard.classList.remove('hidden');
     document.getElementById('submissionForm').classList.add('hidden');
     adminLoginBtn.classList.add('hidden');
-    adminLogoutBtn.classList.remove('hidden');
+    // Hide tutorial button in admin mode
+    if (tutorialBtn) {
+      tutorialBtn.classList.add('hidden');
+    }
+    // Show profile dropdown in header
+    if (profileDropdownContainer) {
+      profileDropdownContainer.classList.remove('hidden');
+    }
     updateAdminTable();
   }
   
@@ -321,7 +323,7 @@ const newSubmission = {
   studentNumber: lpuRadio.checked ? document.getElementById('studentNumber').value : '-',
   program: lpuRadio.checked ? document.getElementById('program').value : '-',
   school: !lpuRadio.checked ? document.getElementById('schoolName').value : '-',
-  campus: lpuRadio.checked ? document.getElementById('campus').value : '-',
+  campus: document.getElementById('campus').value, // Campus is always collected, regardless of user type
   thesisTitle: thesisTitle
 };
 
@@ -353,10 +355,12 @@ document.getElementById('summaryCampusRow').classList.remove('hidden');
 document.getElementById('summarySchoolRow').classList.add('hidden');
 } else {
 const schoolName = document.getElementById('schoolName').value;
+const campus = document.getElementById('campus').value;
 document.getElementById('summarySchool').textContent = schoolName;
+document.getElementById('summaryCampus').textContent = campus;
 document.getElementById('summaryStudentNumberRow').classList.add('hidden');
 document.getElementById('summaryProgramRow').classList.add('hidden');
-    document.getElementById('summaryCampusRow').classList.add('hidden');
+    document.getElementById('summaryCampusRow').classList.remove('hidden'); // Show campus for non-LPU students
 document.getElementById('summarySchoolRow').classList.remove('hidden');
 }
 // Show the modal
@@ -396,19 +400,23 @@ adminLoginForm.addEventListener('submit', function(e) {
   
   // Check credentials
   if (username === 'slrclpubatangasmain' && password === 'slrclpubatangasmain') {
-    adminLoginModal.classList.add('hidden');
-    adminDashboard.classList.remove('hidden');
-    document.getElementById('submissionForm').classList.add('hidden');
-    adminLoginBtn.classList.add('hidden');
-    adminLogoutBtn.classList.remove('hidden');
+    // Save admin login state before reloading
+    localStorage.setItem('adminLoggedIn', 'true');
+    
+    // Reset form and hide error message
     adminLoginForm.reset();
     loginError.classList.add('hidden');
     
-    // Save admin login state
-    localStorage.setItem('adminLoggedIn', 'true');
+    // Show a brief success message
+    const successMessage = document.createElement('div');
+    successMessage.className = 'text-green-500 text-sm mt-2';
+    successMessage.innerHTML = '<i class="ri-check-line mr-1"></i>Login successful! Loading admin dashboard...';
+    loginError.parentNode.insertBefore(successMessage, loginError.nextSibling);
     
-    // Update table with current submissions
-    updateAdminTable();
+    // Reload the page after a short delay to show the success message
+    setTimeout(function() {
+      window.location.reload();
+    }, 1000);
   } else {
     loginError.textContent = 'Invalid username or password. Please try again.';
     loginError.classList.remove('hidden');
@@ -435,7 +443,19 @@ function performLogout() {
   adminDashboard.classList.add('hidden');
   document.getElementById('submissionForm').classList.remove('hidden');
   adminLoginBtn.classList.remove('hidden');
-  adminLogoutBtn.classList.add('hidden');
+  
+  // Show tutorial button when returning to user mode
+  const tutorialBtn = document.getElementById('tutorialBtn');
+  if (tutorialBtn) {
+    tutorialBtn.classList.remove('hidden');
+  }
+  
+  // Hide profile dropdown in header
+  const profileDropdownContainer = document.getElementById('profileDropdownContainer');
+  if (profileDropdownContainer) {
+    profileDropdownContainer.classList.add('hidden');
+  }
+  
   // Clear admin login state
   localStorage.removeItem('adminLoggedIn');
   hideLogoutConfirmation();
@@ -591,9 +611,10 @@ function showEditModal(submission) {
   } else {
     document.getElementById('editNonLpuRadio').checked = true;
     document.getElementById('editSchoolName').value = submission.school;
+    document.getElementById('editCampus').value = submission.campus || ''; // Set campus value for non-LPU students
     document.getElementById('editLpuFields').classList.add('hidden');
     document.getElementById('editProgramField').classList.add('hidden');
-    document.getElementById('editCampusField').classList.add('hidden');
+    document.getElementById('editCampusField').classList.remove('hidden'); // Keep campus field visible
     document.getElementById('editSchoolField').classList.remove('hidden');
   }
   
@@ -628,11 +649,13 @@ document.getElementById('editNonLpuRadio').addEventListener('change', function()
   if (this.checked) {
     document.getElementById('editLpuFields').classList.add('hidden');
     document.getElementById('editProgramField').classList.add('hidden');
-    document.getElementById('editCampusField').classList.add('hidden');
+    // Keep campus field visible for non-LPU students
+    document.getElementById('editCampusField').classList.remove('hidden');
     document.getElementById('editSchoolField').classList.remove('hidden');
     document.getElementById('editStudentNumber').required = false;
     document.getElementById('editProgram').required = false;
     document.getElementById('editSchoolName').required = true;
+    document.getElementById('editCampus').required = true; // Campus is required for both user types
   }
 });
 
@@ -649,7 +672,7 @@ editForm.addEventListener('submit', function(e) {
       thesisTitle: document.getElementById('editThesisTitle').value,
       studentNumber: document.getElementById('editLpuRadio').checked ? document.getElementById('editStudentNumber').value : '-',
       program: document.getElementById('editLpuRadio').checked ? document.getElementById('editProgram').value : '-',
-      campus: document.getElementById('editLpuRadio').checked ? document.getElementById('editCampus').value : '-',
+      campus: document.getElementById('editCampus').value, // Campus value for both LPU and non-LPU students
       school: !document.getElementById('editLpuRadio').checked ? document.getElementById('editSchoolName').value : '-'
     };
     
@@ -768,9 +791,10 @@ function showViewModal(submission) {
     document.getElementById('viewSchoolContainer').classList.add('hidden');
   } else {
     document.getElementById('viewSchool').textContent = submission.school;
+    document.getElementById('viewCampus').textContent = submission.campus || 'Not specified';
     
     document.getElementById('viewStudentNumberContainer').classList.add('hidden');
-    document.getElementById('viewCampusContainer').classList.add('hidden');
+    document.getElementById('viewCampusContainer').classList.remove('hidden'); // Show campus for non-LPU students
     document.getElementById('viewProgramContainer').classList.add('hidden');
     document.getElementById('viewSchoolContainer').classList.remove('hidden');
   }
@@ -922,15 +946,11 @@ function filterSubmissions() {
     );
   }
   
-  // Apply campus filter if selected (only for LPU students)
+  // Apply campus filter if selected (for both LPU and non-LPU students)
   if (selectedCampus !== 'all') {
     filteredSubmissions = filteredSubmissions.filter(sub => {
-      // For LPU students, check if campus matches
-      if (sub.userType === 'LPU') {
-        return sub.campus === selectedCampus;
-      }
-      // For non-LPU students with campus filter, they should be filtered out
-      return false;
+      // Check if campus matches for any student type
+      return sub.campus === selectedCampus;
     });
   }
   
@@ -1099,7 +1119,7 @@ confirmExportBtn.addEventListener('click', function() {
     const selectedDate = dateFilter.value;
     const selectedUserType = userTypeFilter.value;
     const selectedCampus = campusFilter.value;
-    const title = (searchTerm || selectedDate || selectedUserType !== 'all' || selectedCampus !== 'all') ? 'Filtered Research Records Export' : 'Research Records Export';
+    const title = (searchTerm || selectedDate || selectedUserType !== 'all' || selectedCampus !== 'all') ? 'Filtered Research Records Export' : 'Researchers\' Records Export';
     
     // Build filter information text
     let filterInfo = '';
@@ -1270,7 +1290,6 @@ function performLogout() {
   // Refresh the page
   window.location.reload();
 }
-
 // Update the edit submission function
 document.getElementById('editSubmissionBtn').addEventListener('click', function() {
   successModal.classList.add('hidden');
