@@ -307,6 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const thesisForm = document.getElementById('thesisUploadForm');
       const thesisTitle = thesisForm.querySelector('#thesisTitle').value.trim();
       const thesisAuthor = thesisForm.querySelector('#thesisAuthor').value.trim();
+      const thesisBarcode = thesisForm.querySelector('#thesisBarcode').value.trim();
       const thesisDepartment = thesisForm.querySelector('#thesisDepartment').value;
       const thesisYear = thesisForm.querySelector('#thesisYear').value;
       const thesisAbstract = thesisForm.querySelector('#thesisAbstract').value.trim();
@@ -315,6 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Debug - check what values are being captured
       console.log('Form submit - Title:', thesisTitle);
       console.log('Form submit - Author:', thesisAuthor);
+      console.log('Form submit - Barcode:', thesisBarcode);
       console.log('Form submit - Department:', thesisDepartment);
       
       // Validate title is not empty
@@ -336,6 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
           id: Date.now().toString(),
           title: thesisTitle,
           author: thesisAuthor,
+          barcode: thesisBarcode,
           department: thesisDepartment,
           year: thesisYear,
           abstract: thesisAbstract,
@@ -522,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const noRecordsRow = document.createElement('tr');
       noRecordsRow.className = 'text-gray-500 text-center';
       noRecordsRow.innerHTML = `
-        <td colspan="7" class="px-6 py-12">No thesis records found. Add records using the other tabs.</td>
+        <td colspan="8" class="px-6 py-12">No thesis records found. Add records using the other tabs.</td>
       `;
       thesisTableBody.appendChild(noRecordsRow);
       return;
@@ -576,6 +579,9 @@ document.addEventListener('DOMContentLoaded', function() {
         </td>
         <td class="px-6 py-4 whitespace-nowrap">
           <div class="text-sm text-gray-900">${thesis.author || 'Unknown'}</div>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap">
+          <div class="text-sm text-gray-900">${thesis.barcode || ''}</div>
         </td>
         <td class="px-6 py-4 whitespace-nowrap">
           <div class="text-sm text-gray-900">${thesis.department || 'Unspecified'}</div>
@@ -759,7 +765,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to show thesis view modal
   function showThesisViewModal(thesis) {
     // Create a simple alert for now - would be replaced with a modal in production
-    alert(`Thesis Details:\n\nTitle: ${thesis.title}\nAuthor: ${thesis.author}\nDepartment: ${thesis.department}\nYear: ${thesis.year}\nAbstract: ${thesis.abstract}\nKeywords: ${thesis.keywords.join(', ')}`);
+    alert(`Thesis Details:\n\nTitle: ${thesis.title}\nAuthor: ${thesis.author}\nBarcode: ${thesis.barcode || 'N/A'}\nDepartment: ${thesis.department}\nYear: ${thesis.year}\nAbstract: ${thesis.abstract}\nKeywords: ${thesis.keywords.join(', ')}`);
   }
   
   // Function to show thesis edit modal
@@ -870,7 +876,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const typeFilter = thesisTypeFilter ? thesisTypeFilter.value : 'all';
           
           // Create data for the table
-          const headers = ['Title', 'Author', 'Department', 'Year', 'Upload Date', 'Type'];
+          const headers = ['Title', 'Author', 'Barcode', 'Department', 'Year', 'Upload Date', 'Type'];
           const data = filteredRecords.map(thesis => {
             // Format date
             const uploadDate = new Date(thesis.uploadDate);
@@ -891,6 +897,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return [
               thesis.title || 'No Title',
               thesis.author || 'Unknown',
+              thesis.barcode || '',
               thesis.department || 'Unspecified',
               thesis.year || 'Unknown',
               formattedDate,
@@ -945,12 +952,13 @@ document.addEventListener('DOMContentLoaded', function() {
               cellPadding: 2
             },
             columnStyles: {
-              0: { cellWidth: 45 }, // Title
-              1: { cellWidth: 30 }, // Author
-              2: { cellWidth: 35 }, // Department
-              3: { cellWidth: 15 }, // Year
-              4: { cellWidth: 25 }, // Date
-              5: { cellWidth: 20 }  // Type
+              0: { cellWidth: 40 },  // Title
+              1: { cellWidth: 25 },  // Author
+              2: { cellWidth: 20 },  // Barcode
+              3: { cellWidth: 30 },  // Department
+              4: { cellWidth: 15 },  // Year
+              5: { cellWidth: 25 },  // Date
+              6: { cellWidth: 20 }   // Type
             }
           });
           
@@ -1061,7 +1069,7 @@ document.addEventListener('DOMContentLoaded', function() {
           ws_data.push([]);
           
           // Add table headers
-          ws_data.push(['Title', 'Author', 'Department', 'Year', 'Upload Date', 'Type', 'Keywords', 'Abstract']);
+          ws_data.push(['Title', 'Author', 'Barcode', 'Department', 'Year', 'Upload Date', 'Type', 'Keywords', 'Abstract']);
           
           // Add data rows
           filteredRecords.forEach(thesis => {
@@ -1087,6 +1095,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ws_data.push([
               thesis.title || 'No Title',
               thesis.author || 'Unknown',
+              thesis.barcode || '',
               thesis.department || 'Unspecified',
               thesis.year || 'Unknown',
               formattedDate,
@@ -1184,9 +1193,10 @@ document.addEventListener('DOMContentLoaded', function() {
           
           // Styling: Set column widths
           const col_width = [
-            { wch: 50 },  // Title
+            { wch: 45 },  // Title
             { wch: 25 },  // Author
-            { wch: 30 },  // Department
+            { wch: 15 },  // Barcode
+            { wch: 25 },  // Department
             { wch: 10 },  // Year
             { wch: 15 },  // Upload Date
             { wch: 15 },  // Type
