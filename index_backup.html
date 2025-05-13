@@ -750,11 +750,27 @@ Login
       </div>
     </div>
     
-    <!-- Grid layout to match the image -->
-    <div class="grid grid-cols-12 gap-6">
-      <!-- Top row: 1, 2, 5 -->
-      <!-- Box 1: LPU Students -->
-      <div class="col-span-3 bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
+    <!-- Statistics Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
+        <div class="flex items-center justify-between mb-4">
+          <div class="bg-blue-100 p-3 rounded-full">
+            <i class="ri-file-list-line text-blue-600 text-xl"></i>
+          </div>
+          <span class="text-sm font-medium text-gray-500">Total Submissions</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-3xl font-bold text-gray-800">1,248</span>
+          <div class="flex items-center mt-2">
+            <span class="text-green-500 text-sm font-medium flex items-center">
+              <i class="ri-arrow-up-line mr-1"></i> 12.5%
+            </span>
+            <span class="text-xs text-gray-500 ml-2">vs last period</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
         <div class="flex items-center justify-between mb-4">
           <div class="bg-green-100 p-3 rounded-full">
             <i class="ri-user-line text-green-600 text-xl"></i>
@@ -772,8 +788,7 @@ Login
         </div>
       </div>
       
-      <!-- Box 2: External Users -->
-      <div class="col-span-3 bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
         <div class="flex items-center justify-between mb-4">
           <div class="bg-purple-100 p-3 rounded-full">
             <i class="ri-global-line text-purple-600 text-xl"></i>
@@ -791,8 +806,56 @@ Login
         </div>
       </div>
       
-      <!-- Box 5: Popular Research Topics (spans rows) -->
-      <div class="col-span-6 row-span-2 bg-white p-6 rounded-lg shadow-md border border-gray-100">
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
+        <div class="flex items-center justify-between mb-4">
+          <div class="bg-yellow-100 p-3 rounded-full">
+            <i class="ri-download-line text-yellow-600 text-xl"></i>
+          </div>
+          <span class="text-sm font-medium text-gray-500">Downloads</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-3xl font-bold text-gray-800">3,542</span>
+          <div class="flex items-center mt-2">
+            <span class="text-green-500 text-sm font-medium flex items-center">
+              <i class="ri-arrow-up-line mr-1"></i> 24.2%
+            </span>
+            <span class="text-xs text-gray-500 ml-2">vs last period</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <!-- Submission Trends Chart -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <h4 class="text-lg font-medium text-gray-800">Submission Trends</h4>
+          <div class="flex space-x-2">
+            <button class="px-3 py-1 text-xs font-medium bg-primary text-white rounded-full">Weekly</button>
+            <button class="px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-full">Monthly</button>
+          </div>
+        </div>
+        <div id="submissionTrendsChart" class="w-full h-80"></div>
+      </div>
+      
+      <!-- User Distribution Chart -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <h4 class="text-lg font-medium text-gray-800">User Distribution</h4>
+          <div class="flex space-x-2">
+            <button class="px-3 py-1 text-xs font-medium bg-primary text-white rounded-full">By Type</button>
+            <button class="px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-full">By Campus</button>
+          </div>
+        </div>
+        <div id="userDistributionChart" class="w-full h-80"></div>
+      </div>
+    </div>
+    
+    <!-- Bottom Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Popular Research Topics -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
         <h4 class="text-lg font-medium text-gray-800 mb-4">Popular Research Topics</h4>
         <div class="space-y-4">
           <div>
@@ -843,68 +906,136 @@ Login
         </div>
       </div>
       
-      <!-- Second row: 3, 4 (with 5 continuing from above) -->
-      <!-- Box 3: Total Submissions -->
-      <div class="col-span-3 bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
-        <div class="flex items-center justify-between mb-4">
-          <div class="bg-blue-100 p-3 rounded-full">
-            <i class="ri-file-list-line text-blue-600 text-xl"></i>
+      <!-- Most Active Users -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <h4 class="text-lg font-medium text-gray-800 mb-4">Most Active Users</h4>
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+              <span class="text-xs font-medium text-blue-800">MJ</span>
+            </div>
+            <div class="flex-grow">
+              <h5 class="text-sm font-medium text-gray-900">Michael Johnson</h5>
+              <p class="text-xs text-gray-500">Computer Science • 42 submissions</p>
+            </div>
+            <div class="flex-shrink-0">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                #1
+              </span>
+            </div>
           </div>
-          <span class="text-sm font-medium text-gray-500">Total Submissions</span>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-3xl font-bold text-gray-800">1,248</span>
-          <div class="flex items-center mt-2">
-            <span class="text-green-500 text-sm font-medium flex items-center">
-              <i class="ri-arrow-up-line mr-1"></i> 12.5%
-            </span>
-            <span class="text-xs text-gray-500 ml-2">vs last period</span>
+          <div class="flex items-center">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+              <span class="text-xs font-medium text-green-800">ER</span>
+            </div>
+            <div class="flex-grow">
+              <h5 class="text-sm font-medium text-gray-900">Emily Rodriguez</h5>
+              <p class="text-xs text-gray-500">Psychology • 38 submissions</p>
+            </div>
+            <div class="flex-shrink-0">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                #2
+              </span>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+              <span class="text-xs font-medium text-yellow-800">DT</span>
+            </div>
+            <div class="flex-grow">
+              <h5 class="text-sm font-medium text-gray-900">David Thompson</h5>
+              <p class="text-xs text-gray-500">Business Admin • 35 submissions</p>
+            </div>
+            <div class="flex-shrink-0">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                #3
+              </span>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+              <span class="text-xs font-medium text-purple-800">SW</span>
+            </div>
+            <div class="flex-grow">
+              <h5 class="text-sm font-medium text-gray-900">Sarah Williams</h5>
+              <p class="text-xs text-gray-500">Nursing • 29 submissions</p>
+            </div>
+            <div class="flex-shrink-0">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
+                #4
+              </span>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
+              <span class="text-xs font-medium text-red-800">RC</span>
+            </div>
+            <div class="flex-grow">
+              <h5 class="text-sm font-medium text-gray-900">Robert Chen</h5>
+              <p class="text-xs text-gray-500">Engineering • 24 submissions</p>
+            </div>
+            <div class="flex-shrink-0">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
+                #5
+              </span>
+            </div>
           </div>
         </div>
       </div>
       
-      <!-- Box 4: Downloads -->
-      <div class="col-span-3 bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition">
+      <!-- Recent Activity -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
         <div class="flex items-center justify-between mb-4">
-          <div class="bg-yellow-100 p-3 rounded-full">
-            <i class="ri-download-line text-yellow-600 text-xl"></i>
-          </div>
-          <span class="text-sm font-medium text-gray-500">Total Exports</span>
+          <h4 class="text-lg font-medium text-gray-800">Recent Activity</h4>
+          <a href="#" class="text-sm font-medium text-primary hover:text-primary-dark">View All</a>
         </div>
-        <div class="flex flex-col">
-          <span class="text-3xl font-bold text-gray-800">3,542</span>
-          <div class="flex items-center mt-2">
-            <span class="text-green-500 text-sm font-medium flex items-center">
-              <i class="ri-arrow-up-line mr-1"></i> 24.2%
-            </span>
-            <span class="text-xs text-gray-500 ml-2">vs last period</span>
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+              <i class="ri-file-upload-line text-blue-600 text-sm"></i>
+            </div>
+            <div>
+              <h5 class="text-sm font-medium text-gray-900">New submission from Maria Alvarez</h5>
+              <p class="text-xs text-gray-500">2 minutes ago • Engineering</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+              <i class="ri-download-line text-green-600 text-sm"></i>
+            </div>
+            <div>
+              <h5 class="text-sm font-medium text-gray-900">Robert Garcia downloaded "Financial Analysis of Local SMEs"</h5>
+              <p class="text-xs text-gray-500">15 minutes ago • Business Administration</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+              <i class="ri-user-add-line text-yellow-600 text-sm"></i>
+            </div>
+            <div>
+              <h5 class="text-sm font-medium text-gray-900">New external user registered: Jennifer Santos</h5>
+              <p class="text-xs text-gray-500">32 minutes ago • Arts and Humanities</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+              <i class="ri-file-search-line text-purple-600 text-sm"></i>
+            </div>
+            <div>
+              <h5 class="text-sm font-medium text-gray-900">Carlos Mendoza viewed "Machine Learning Applications"</h5>
+              <p class="text-xs text-gray-500">45 minutes ago • Computer Science</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
+              <i class="ri-edit-line text-red-600 text-sm"></i>
+            </div>
+            <div>
+              <h5 class="text-sm font-medium text-gray-900">Admin updated research material guidelines</h5>
+              <p class="text-xs text-gray-500">1 hour ago • System</p>
+            </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Bottom row: 6, 7 -->
-      <!-- Box 6: Submission Trends Chart -->
-      <div class="col-span-6 bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        <div class="flex items-center justify-between mb-4">
-          <h4 class="text-lg font-medium text-gray-800">Submission Trends</h4>
-          <div class="flex space-x-2">
-            <button class="px-3 py-1 text-xs font-medium bg-primary text-white rounded-full">Weekly</button>
-            <button class="px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-full">Monthly</button>
-          </div>
-        </div>
-        <div id="submissionTrendsChart" class="w-full h-80"></div>
-      </div>
-      
-      <!-- Box 7: User Distribution Chart -->
-      <div class="col-span-6 bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        <div class="flex items-center justify-between mb-4">
-          <h4 class="text-lg font-medium text-gray-800">User Distribution</h4>
-          <div class="flex space-x-2">
-            <button class="px-3 py-1 text-xs font-medium bg-primary text-white rounded-full">By Type</button>
-            <button class="px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-full">By Campus</button>
-          </div>
-        </div>
-        <div id="userDistributionChart" class="w-full h-80"></div>
       </div>
     </div>
   </div>
@@ -936,7 +1067,7 @@ Login
           </li>
           <li class="mr-2" role="presentation">
             <button id="thesisDatabaseTabBtn" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg" type="button" role="tab" aria-selected="false">
-              <i class="ri-database-2-line mr-2"></i>Thesis Data Table
+              <i class="ri-database-2-line mr-2"></i>Thesis Database Table
             </button>
           </li>
         </ul>
@@ -1059,7 +1190,7 @@ Login
       <!-- Thesis Database Table Content -->
       <div id="thesisDatabaseTabContent" class="hidden">
         <div class="mb-6">
-          <h4 class="text-lg font-medium text-gray-800 mb-4">Thesis Data Table</h4>
+          <h4 class="text-lg font-medium text-gray-800 mb-4">Thesis Database</h4>
           <p class="text-gray-600 mb-4">View and manage all thesis records in the system.</p>
           
           <!-- Search and Filter Section -->
@@ -1156,13 +1287,18 @@ Login
               <tbody id="thesisTableBody" class="bg-white divide-y divide-gray-200">
                 <!-- Table rows will be populated via JavaScript -->
                 <tr class="text-gray-500 text-center">
-                  <td colspan="8" class="px-6 py-12">No thesis records found. Add records using the other tabs.</td>
+                  <td colspan="7" class="px-6 py-12">No thesis records found. Add records using the other tabs.</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
+    </div>
+    
+    <!-- Placeholder for additional content if needed -->
+    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 mt-6">
+      <p class="text-gray-500 text-center py-8">Choose an upload method from the tabs above.</p>
     </div>
   </div>
 </div>
@@ -1579,7 +1715,7 @@ Login
     <div class="bg-primary px-6 py-4 flex justify-between items-center">
       <h3 class="text-xl font-medium text-white flex items-center">
         <i class="ri-download-line mr-2"></i>
-        Export Thesis List
+        Export Thesis Records
       </h3>
       <button id="closeThesisExportBtn" class="text-white hover:text-gray-200">
         <i class="ri-close-line text-xl"></i>
@@ -1891,6 +2027,30 @@ Login
           currentY = 50;
         }
         
+        // Add most active users
+        doc.setFontSize(18);
+        doc.setTextColor(60, 60, 60);
+        doc.text('Most Active Users', margin, currentY);
+        currentY += 25;
+        
+        const usersData = [
+          ['Michael Johnson', 'Computer Science', '42 submissions'],
+          ['Emily Rodriguez', 'Psychology', '38 submissions'],
+          ['David Thompson', 'Business Admin', '35 submissions'],
+          ['Sarah Williams', 'Nursing', '29 submissions'],
+          ['Robert Chen', 'Engineering', '24 submissions']
+        ];
+        
+        doc.autoTable({
+          startY: currentY,
+          head: [['Name', 'Department', 'Activity']],
+          body: usersData,
+          theme: 'grid',
+          headStyles: { fillColor: [191, 47, 47], textColor: [255, 255, 255] },
+          styles: { fontSize: 12 },
+          margin: { left: margin }
+        });
+        
         // Add footer
         const totalPages = doc.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
@@ -2005,6 +2165,21 @@ Login
         
         const topicsWS = XLSX.utils.aoa_to_sheet(topicsData);
         XLSX.utils.book_append_sheet(wb, topicsWS, 'Research Topics');
+        
+        // Active users sheet
+        const usersData = [
+          ['Most Active Users'],
+          [],
+          ['Name', 'Department', 'Activity'],
+          ['Michael Johnson', 'Computer Science', '42 submissions'],
+          ['Emily Rodriguez', 'Psychology', '38 submissions'],
+          ['David Thompson', 'Business Admin', '35 submissions'],
+          ['Sarah Williams', 'Nursing', '29 submissions'],
+          ['Robert Chen', 'Engineering', '24 submissions']
+        ];
+        
+        const usersWS = XLSX.utils.aoa_to_sheet(usersData);
+        XLSX.utils.book_append_sheet(wb, usersWS, 'Active Users');
         
         // Save the Excel file
         XLSX.writeFile(wb, 'research-analytics-report.xlsx');
@@ -2278,24 +2453,20 @@ Login
     // Tab switching for admin dashboard
     const recordsTabBtn = document.getElementById('recordsTabBtn');
     const statisticsTabBtn = document.getElementById('statisticsTabBtn');
-    const thesisTabBtn = document.getElementById('thesisTabBtn');
     const recordsTabContent = document.getElementById('recordsTabContent');
     const statisticsTabContent = document.getElementById('statisticsTabContent');
-    const thesisTabContent = document.getElementById('thesisTabContent');
     
     if (recordsTabBtn && statisticsTabBtn) {
       // Function to reset all tabs
       function resetAllTabs() {
         // Reset all tab buttons
-        [recordsTabBtn, statisticsTabBtn, thesisTabBtn].forEach(tab => {
-          if (tab) {
-            tab.classList.remove('border-primary', 'text-primary');
-            tab.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
-          }
+        [recordsTabBtn, statisticsTabBtn].forEach(tab => {
+          tab.classList.remove('border-primary', 'text-primary');
+          tab.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
         });
         
         // Hide all tab contents
-        [recordsTabContent, statisticsTabContent, thesisTabContent].forEach(content => {
+        [recordsTabContent, statisticsTabContent].forEach(content => {
           if (content) content.classList.add('hidden');
         });
       }
@@ -2313,6 +2484,8 @@ Login
         recordsTabContent.classList.remove('hidden');
       });
       
+
+      
       // Statistics Tab
       statisticsTabBtn.addEventListener('click', function(e) {
         e.preventDefault();
@@ -2327,23 +2500,6 @@ Login
         
         // Initialize charts (the chart initialization is handled in the separate script)
       });
-      
-      // Thesis Tab
-      if (thesisTabBtn) {
-        thesisTabBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          resetAllTabs();
-          
-          // Activate this tab
-          thesisTabBtn.classList.add('border-primary', 'text-primary');
-          thesisTabBtn.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
-          
-          // Show content
-          if (thesisTabContent) {
-            thesisTabContent.classList.remove('hidden');
-          }
-        });
-      }
       
       // Set Records tab as default active tab
       recordsTabBtn.click();
