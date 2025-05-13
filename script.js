@@ -72,28 +72,11 @@ document.getElementById('closeRatingBtn').addEventListener('click', function() {
 // Submit rating button
 document.getElementById('submitRatingBtn').addEventListener('click', function() {
   document.getElementById('ratingAnimation').classList.add('hidden');
-  // Show thank you animation
-  document.getElementById('thankYouAnimation').classList.remove('hidden');
-});
-// Close thank you animation buttons
-document.getElementById('closeThankYouBtn').addEventListener('click', function() {
-  document.getElementById('thankYouAnimation').classList.add('hidden');
-  
-  // Reload the page after closing
+  // Skip thank you animation and directly reload the page
   setTimeout(function() {
     window.location.reload();
   }, 300);
 });
-
-document.getElementById('closeThankYouBtn2').addEventListener('click', function() {
-  document.getElementById('thankYouAnimation').classList.add('hidden');
-  
-  // Reload the page after closing
-  setTimeout(function() {
-    window.location.reload();
-  }, 300);
-});
-
 // Edit submission function
 document.getElementById('editSubmissionBtn').addEventListener('click', function() {
 successModal.classList.add('hidden');

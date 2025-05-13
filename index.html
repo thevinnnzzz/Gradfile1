@@ -510,7 +510,7 @@ input:checked~label {
 <div class="flex justify-end">
 <button type="submit" class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-opacity-90 transition flex items-center whitespace-nowrap submit-btn-glow">
 <i class="ri-save-line mr-2"></i>
-Submit Research Record
+Submit Record
 </button>
 </div>
 </form>
@@ -1661,6 +1661,38 @@ Login
   </div>
 </div>
 
+<!-- Data Privacy Disclaimer Modal (Hidden by default) -->
+<div id="privacyDisclaimerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+<div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+<div class="bg-primary px-6 py-4 flex justify-between items-center">
+<h3 class="text-xl font-medium text-white flex items-center">
+<i class="ri-shield-check-line mr-2"></i>
+Data Privacy Disclaimer
+</h3>
+<button id="closePrivacyModalBtn" class="text-white hover:text-gray-200">
+<i class="ri-close-line text-xl"></i>
+</button>
+</div>
+<div class="px-6 py-4">
+<div class="mb-6">
+<div class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-md">
+<p class="text-gray-700 text-sm">By submitting this form, you consent to the collection and processing of your personal data for the specified purpose. We are committed to safeguarding your information in compliance with the Philippine Data Privacy Act of 2012. Your data will be stored securely, used solely for its intended purpose, and will not be shared with third parties without your explicit consent, unless required by law.</p>
+</div>
+</div>
+<div class="flex justify-between">
+<button id="declinePrivacyBtn" class="bg-gray-100 text-gray-800 px-4 py-2 !rounded-button font-medium hover:bg-gray-200 transition flex items-center whitespace-nowrap">
+<i class="ri-close-circle-line mr-2"></i>
+Decline
+</button>
+<button id="acceptPrivacyBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">
+<i class="ri-check-line mr-2"></i>
+Accept & Submit
+</button>
+</div>
+</div>
+</div>
+</div>
+
 <script src="script.js"></script>
   
   <!-- Thesis Management Script -->
@@ -2498,6 +2530,121 @@ Login
             </div>
           `;
         });
+      }
+    }
+  });
+</script>
+
+<!-- Data Privacy Disclaimer Handler Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get privacy disclaimer modal elements
+    const privacyDisclaimerModal = document.getElementById('privacyDisclaimerModal');
+    const closePrivacyModalBtn = document.getElementById('closePrivacyModalBtn');
+    const declinePrivacyBtn = document.getElementById('declinePrivacyBtn');
+    const acceptPrivacyBtn = document.getElementById('acceptPrivacyBtn');
+    
+    // Get success modal elements
+    const successModal = document.getElementById('successModal');
+    const confirmSubmissionBtn = document.getElementById('confirmSubmissionBtn');
+    
+    // Show privacy disclaimer modal when confirm button is clicked
+    if (confirmSubmissionBtn) {
+      confirmSubmissionBtn.addEventListener('click', function() {
+        // Hide success modal and show privacy disclaimer modal
+        successModal.classList.add('hidden');
+        privacyDisclaimerModal.classList.remove('hidden');
+      });
+    }
+    
+    // Close privacy modal when close button is clicked
+    if (closePrivacyModalBtn) {
+      closePrivacyModalBtn.addEventListener('click', function() {
+        privacyDisclaimerModal.classList.add('hidden');
+        successModal.classList.remove('hidden'); // Go back to the success modal
+      });
+    }
+    
+    // Handle decline button click
+    if (declinePrivacyBtn) {
+      declinePrivacyBtn.addEventListener('click', function() {
+        privacyDisclaimerModal.classList.add('hidden');
+        successModal.classList.remove('hidden'); // Go back to the success modal
+      });
+    }
+    
+    // Handle accept button click
+    if (acceptPrivacyBtn) {
+      acceptPrivacyBtn.addEventListener('click', function() {
+        // Hide the privacy modal
+        privacyDisclaimerModal.classList.add('hidden');
+        
+        // Proceed with form submission logic
+        const formData = collectFormData(); // You'll need to define this function or use the existing one
+        
+        // Store data (assuming you have a function to handle this)
+        storeResearchRecord(formData);
+        
+        // Show success message or redirect
+        showRatingAnimation(); // Assuming this is the next step in your flow
+      });
+    }
+    
+    // Function to collect form data (implement based on your existing code)
+    function collectFormData() {
+      // Get data from form fields
+      const userType = document.querySelector('input[name="userType"]:checked').value;
+      const fullName = document.getElementById('fullName').value;
+      const thesisTitle = document.getElementById('thesisTitle').value;
+      
+      let data = {
+        userType: userType,
+        fullName: fullName,
+        thesisTitle: thesisTitle,
+        date: new Date().toLocaleDateString()
+      };
+      
+      // Add LPU student fields if applicable
+      if (userType === 'lpu') {
+        data.studentNumber = document.getElementById('studentNumber').value;
+        data.campus = document.getElementById('campus').value;
+        data.program = document.getElementById('program').value;
+      } else {
+        // Non-LPU student
+        data.schoolName = document.getElementById('schoolName').value;
+      }
+      
+      return data;
+    }
+    
+    // Function to store research record (implement based on your existing code)
+    function storeResearchRecord(data) {
+      // Get existing records from localStorage or initialize empty array
+      let records = JSON.parse(localStorage.getItem('researchRecords')) || [];
+      
+      // Add new record
+      records.push(data);
+      
+      // Save back to localStorage
+      localStorage.setItem('researchRecords', JSON.stringify(records));
+      
+      // Reset form
+      document.getElementById('researchForm').reset();
+    }
+    
+    // Function to show rating animation (assuming this exists in your code)
+    function showRatingAnimation() {
+      // Show rating animation modal if it exists
+      const ratingAnimation = document.getElementById('ratingAnimation');
+      if (ratingAnimation) {
+        ratingAnimation.classList.remove('hidden');
+      } else {
+        // If no rating animation, just show a success alert
+        alert('Your research record has been successfully submitted!');
+        // Reload the page
+        setTimeout(function() {
+          window.location.reload();
+        }, 500);
       }
     }
   });
