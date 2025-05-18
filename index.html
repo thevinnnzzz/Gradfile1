@@ -407,6 +407,7 @@ input:checked~label {
 <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
 <input type="text" id="fullName" name="fullName" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
 </div>
+
 <!-- LPU Student Fields -->
 <div id="lpuFields" class="col-span-2 md:col-span-1">
 <label for="studentNumber" class="block text-sm font-medium text-gray-700 mb-1">Student Number</label>
@@ -541,6 +542,7 @@ Review Submission
 <span class="text-gray-600 col-span-1">Full Name:</span>
 <span id="summaryName" class="font-medium col-span-2"></span>
 </div>
+
 <div id="summaryStudentNumberRow" class="grid grid-cols-3">
 <span class="text-gray-600 col-span-1">Student Number:</span>
 <span id="summaryStudentNumber" class="font-medium col-span-2"></span>
@@ -626,18 +628,23 @@ Login
     <div class="border-b border-gray-200">
       <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
         <li class="mr-2">
-          <a href="#" id="recordsTabBtn" class="inline-block p-4 border-b-2 border-primary text-primary rounded-t-lg active" aria-current="page">
-            <i class="ri-file-list-line mr-2"></i>User Records
+          <a href="#" id="statisticsTabBtn" class="inline-block p-4 border-b-2 border-primary text-primary rounded-t-lg active" aria-current="page">
+            <i class="ri-bar-chart-line mr-2"></i>Statistics
           </a>
         </li>
         <li class="mr-2">
-          <a href="#" id="statisticsTabBtn" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg">
-            <i class="ri-bar-chart-line mr-2"></i>Statistics
+          <a href="#" id="recordsTabBtn" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg">
+            <i class="ri-file-list-line mr-2"></i>User Records
           </a>
         </li>
         <li class="mr-2">
           <a href="#" id="thesisTabBtn" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg">
             <i class="ri-file-paper-2-line mr-2"></i>Thesis Data
+          </a>
+        </li>
+        <li class="mr-2">
+          <a href="#" id="systemUserTabBtn" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg">
+            <i class="ri-user-settings-line mr-2"></i>System Users
           </a>
         </li>
       </ul>
@@ -725,7 +732,242 @@ Login
     </div>
   </div>
 
-
+  <!-- System User Tab Content -->
+  <div id="systemUserTabContent" class="hidden">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-lg font-medium text-gray-800">System User Management</h3>
+      <div class="flex items-center space-x-4">
+        <button id="addUserBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap flex items-center">
+          <i class="ri-user-add-line mr-2"></i>
+          Add User
+        </button>
+        <div class="relative">
+          <input type="text" id="userSearchInput" placeholder="Search users..." class="w-64 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+          <i class="ri-search-line absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100 mb-8">
+      <div class="mb-6">
+        <h4 class="text-lg font-medium text-gray-800 mb-4">Role-Based Access Control</h4>
+        <p class="text-gray-600 mb-4">Manage system users and their access permissions based on roles.</p>
+        
+        <!-- Role Badge -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="text-sm font-medium text-gray-700 mr-2 py-1">Role:</span>
+          <span class="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-800">Reader</span>
+        </div>
+      </div>
+      
+      <!-- Users Table -->
+      <div class="overflow-x-auto">
+        <table id="systemUsersTable" class="w-full min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary transition" data-sort="username">
+                Username <i class="ri-arrow-up-down-line ml-1"></i>
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary transition" data-sort="fullName">
+                Full Name <i class="ri-arrow-up-down-line ml-1"></i>
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary transition" data-sort="email">
+                Email <i class="ri-arrow-up-down-line ml-1"></i>
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-primary transition" data-sort="lastLogin">
+                Last Login <i class="ri-arrow-up-down-line ml-1"></i>
+              </th>
+              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200" id="systemUsersTableBody">
+            <!-- Sample users will be loaded here via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- User count indicator -->
+      <div class="flex justify-end items-center mt-4">
+        <div class="text-sm text-gray-700">
+          Total: <span id="userTotalCount">0</span> staff members
+        </div>
+      </div>
+      
+      <!-- Add User Modal -->
+      <div id="addUserModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+          <div class="mt-3">
+            <div class="flex justify-between items-center pb-3">
+              <h3 class="text-lg font-medium text-gray-900">Add New User</h3>
+              <button id="closeAddUserModal" class="text-gray-400 hover:text-gray-500">
+                <i class="ri-close-line text-xl"></i>
+              </button>
+            </div>
+            <form id="addUserForm" class="space-y-4">
+              <div>
+                <label for="newUsername" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" id="newUsername" name="username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
+              </div>
+              <div>
+                <label for="newFullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                <input type="text" id="newFullName" name="fullName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
+              </div>
+              <div>
+                <label for="newEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="newEmail" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
+              </div>
+              <div>
+                <label for="newPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="newPassword" name="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
+              </div>
+              <div class="pt-4 flex justify-end space-x-3">
+                <button type="button" id="cancelAddUser" class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-primary border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  Add User
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <!-- View User Modal -->
+      <div id="viewUserModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+          <div class="mt-3">
+            <div class="flex justify-between items-center pb-3">
+              <h3 class="text-lg font-medium text-gray-900">User Details</h3>
+              <button id="closeViewUserModal" class="text-gray-400 hover:text-gray-500">
+                <i class="ri-close-line text-xl"></i>
+              </button>
+            </div>
+            <div id="viewUserContent" class="space-y-4">
+              <div class="flex items-center justify-center mb-4">
+                <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center">
+                  <i class="ri-user-line text-gray-500 text-3xl"></i>
+                </div>
+              </div>
+              <div class="border-t pt-4">
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="text-sm font-medium text-gray-500">Username:</div>
+                  <div id="viewUsername" class="text-sm text-gray-900 col-span-2"></div>
+                </div>
+              </div>
+              <div class="border-t pt-4">
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="text-sm font-medium text-gray-500">Full Name:</div>
+                  <div id="viewFullName" class="text-sm text-gray-900 col-span-2"></div>
+                </div>
+              </div>
+              <div class="border-t pt-4">
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="text-sm font-medium text-gray-500">Email:</div>
+                  <div id="viewEmail" class="text-sm text-gray-900 col-span-2"></div>
+                </div>
+              </div>
+              <div class="border-t pt-4">
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="text-sm font-medium text-gray-500">Status:</div>
+                  <div id="viewStatus" class="text-sm text-gray-900 col-span-2"></div>
+                </div>
+              </div>
+              <div class="border-t pt-4">
+                <div class="grid grid-cols-3 gap-4">
+                  <div class="text-sm font-medium text-gray-500">Last Login:</div>
+                  <div id="viewLastLogin" class="text-sm text-gray-900 col-span-2"></div>
+                </div>
+              </div>
+              <div class="pt-4 flex justify-end">
+                <button type="button" id="closeViewUserBtn" class="px-4 py-2 bg-primary border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Edit User Modal -->
+      <div id="editUserModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+          <div class="mt-3">
+            <div class="flex justify-between items-center pb-3">
+              <h3 class="text-lg font-medium text-gray-900">Edit User</h3>
+              <button id="closeEditUserModal" class="text-gray-400 hover:text-gray-500">
+                <i class="ri-close-line text-xl"></i>
+              </button>
+            </div>
+            <form id="editUserForm" class="space-y-4">
+              <input type="hidden" id="editUserId">
+              <div>
+                <label for="editUsername" class="block text-sm font-medium text-gray-700">Username</label>
+                <input type="text" id="editUsername" name="username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
+              </div>
+              <div>
+                <label for="editFullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                <input type="text" id="editFullName" name="fullName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
+              </div>
+              <div>
+                <label for="editEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="editEmail" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" required>
+              </div>
+              <div>
+                <label for="editStatus" class="block text-sm font-medium text-gray-700">Status</label>
+                <select id="editStatus" name="status" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="suspended">Suspended</option>
+                </select>
+              </div>
+              <div class="pt-4 flex justify-end space-x-3">
+                <button type="button" id="cancelEditUser" class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-primary border border-transparent rounded-md text-sm font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Delete User Modal -->
+      <div id="deleteUserModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+          <div class="mt-3">
+            <div class="flex justify-between items-center pb-3">
+              <h3 class="text-lg font-medium text-gray-900">Delete User</h3>
+              <button id="closeDeleteUserModal" class="text-gray-400 hover:text-gray-500">
+                <i class="ri-close-line text-xl"></i>
+              </button>
+            </div>
+            <div class="space-y-4">
+              <div class="flex items-center justify-center mb-4 text-red-500">
+                <i class="ri-error-warning-line text-5xl"></i>
+              </div>
+              <p class="text-center text-gray-700">Are you sure you want to delete this user?</p>
+              <p id="deleteUserName" class="text-center font-medium text-gray-900"></p>
+              <p class="text-center text-sm text-gray-500">This action cannot be undone.</p>
+              <input type="hidden" id="deleteUserId">
+              <div class="pt-4 flex justify-center space-x-3">
+                <button type="button" id="cancelDeleteUser" class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  Cancel
+                </button>
+                <button type="button" id="confirmDeleteUser" class="px-4 py-2 bg-red-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Statistics Tab Content -->
   <div id="statisticsTabContent" class="hidden">
@@ -743,7 +985,7 @@ Login
             <i class="ri-arrow-down-s-line text-gray-500"></i>
           </div>
         </div>
-        <button id="exportStatsBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition flex items-center whitespace-nowrap">
+        <button id="exportStatsBtn" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap flex items-center">
           <i class="ri-download-line mr-2"></i>
           Export Report
         </button>
@@ -925,12 +1167,7 @@ Login
       <div class="border-b border-gray-200 mb-6">
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
           <li class="mr-2" role="presentation">
-            <button id="thesisDetailsTabBtn" class="inline-block p-4 border-b-2 border-primary text-primary rounded-t-lg active" type="button" role="tab" aria-selected="true">
-              <i class="ri-file-list-line mr-2"></i>Insert Thesis Details
-            </button>
-          </li>
-          <li class="mr-2" role="presentation">
-            <button id="thesisDocumentTabBtn" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 rounded-t-lg" type="button" role="tab" aria-selected="false">
+            <button id="thesisDocumentTabBtn" class="inline-block p-4 border-b-2 border-primary text-primary rounded-t-lg active" type="button" role="tab" aria-selected="true">
               <i class="ri-upload-cloud-line mr-2"></i>Batch Upload
             </button>
           </li>
@@ -942,64 +1179,7 @@ Login
         </ul>
       </div>
       
-      <!-- Insert Thesis Details Form -->
-      <div id="thesisDetailsTabContent" class="block">
-        <h4 class="text-lg font-medium text-gray-800 mb-4">Enter Thesis Details</h4>
-        <form id="thesisUploadForm" class="space-y-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="col-span-2 md:col-span-1">
-            <label for="thesisTitle" class="block text-sm font-medium text-gray-700 mb-1">Thesis Title</label>
-            <input type="text" id="thesisTitle" name="thesisTitle" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
-          </div>
-          
-          <div class="col-span-2 md:col-span-1">
-            <label for="thesisAuthor" class="block text-sm font-medium text-gray-700 mb-1">Author Name</label>
-            <input type="text" id="thesisAuthor" name="thesisAuthor" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
-          </div>
-          
-          <div class="col-span-2 md:col-span-1">
-            <label for="thesisBarcode" class="block text-sm font-medium text-gray-700 mb-1">Barcode</label>
-            <input type="text" id="thesisBarcode" name="thesisBarcode" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter barcode number">
-          </div>
-          
-          <div class="col-span-2 md:col-span-1">
-            <label for="thesisDepartment" class="block text-sm font-medium text-gray-700 mb-1">Department/Program</label>
-            <select id="thesisDepartment" name="thesisDepartment" class="w-full px-4 py-2 border border-gray-300 rounded appearance-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8" required>
-              <option value="">Select Department/Program</option>
-              <option value="Computer Science">Computer Science</option>
-              <option value="Information Technology">Information Technology</option>
-              <option value="Business Administration">Business Administration</option>
-              <option value="Psychology">Psychology</option>
-              <option value="Nursing">Nursing</option>
-              <option value="Engineering">Engineering</option>
-              <option value="Education">Education</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          
-          <div class="col-span-2 md:col-span-1">
-            <label for="thesisYear" class="block text-sm font-medium text-gray-700 mb-1">Year Completed</label>
-            <input type="number" id="thesisYear" name="thesisYear" min="1900" max="2099" step="1" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
-          </div>
-          
-          <div class="col-span-2">
-            <label for="thesisAbstract" class="block text-sm font-medium text-gray-700 mb-1">Abstract</label>
-            <textarea id="thesisAbstract" name="thesisAbstract" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required></textarea>
-          </div>
-          
-          <div class="col-span-2">
-            <label for="thesisKeywords" class="block text-sm font-medium text-gray-700 mb-1">Keywords (comma separated)</label>
-            <input type="text" id="thesisKeywords" name="thesisKeywords" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="e.g. education, technology, research" required>
-          </div>
-        </div>
-        
-        <div class="flex justify-end">
-          <button type="submit" id="submitThesisBtn" class="bg-primary text-white px-6 py-2 !rounded-button font-medium hover:bg-opacity-90 transition">
-            <i class="ri-save-line mr-2"></i>Save Thesis
-          </button>
-        </div>
-      </form>
-      </div>
+
       
       <!-- Upload Thesis Document Content -->
       <div id="thesisDocumentTabContent" class="hidden">
@@ -1229,6 +1409,7 @@ Login
             <label for="editFullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
             <input type="text" id="editFullName" name="editFullName" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
           </div>
+          
           <div id="editLpuFields" class="col-span-2 md:col-span-1">
             <label for="editStudentNumber" class="block text-sm font-medium text-gray-700 mb-1">Student Number</label>
             <input type="text" id="editStudentNumber" name="editStudentNumber" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
@@ -1369,6 +1550,7 @@ Login
                   <p class="text-sm text-gray-600">Full Name</p>
                   <p id="viewName" class="font-medium text-gray-800"></p>
                 </div>
+
                 <div id="viewStudentNumberContainer">
                   <p class="text-sm text-gray-600">Student Number</p>
                   <p id="viewStudentNumber" class="font-medium text-gray-800"></p>
@@ -1700,6 +1882,9 @@ Accept & Submit
   
   <!-- Thesis Search Script -->
   <script src="js/search.js"></script>
+  
+  <!-- System Users Management Script -->
+  <script src="js/users.js"></script>
   
   <!-- ECharts Library -->
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
@@ -2311,15 +2496,17 @@ Accept & Submit
     const recordsTabBtn = document.getElementById('recordsTabBtn');
     const statisticsTabBtn = document.getElementById('statisticsTabBtn');
     const thesisTabBtn = document.getElementById('thesisTabBtn');
+    const systemUserTabBtn = document.getElementById('systemUserTabBtn');
     const recordsTabContent = document.getElementById('recordsTabContent');
     const statisticsTabContent = document.getElementById('statisticsTabContent');
     const thesisTabContent = document.getElementById('thesisTabContent');
+    const systemUserTabContent = document.getElementById('systemUserTabContent');
     
     if (recordsTabBtn && statisticsTabBtn) {
       // Function to reset all tabs
       function resetAllTabs() {
         // Reset all tab buttons
-        [recordsTabBtn, statisticsTabBtn, thesisTabBtn].forEach(tab => {
+        [recordsTabBtn, statisticsTabBtn, thesisTabBtn, systemUserTabBtn].forEach(tab => {
           if (tab) {
             tab.classList.remove('border-primary', 'text-primary');
             tab.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
@@ -2327,7 +2514,7 @@ Accept & Submit
         });
         
         // Hide all tab contents
-        [recordsTabContent, statisticsTabContent, thesisTabContent].forEach(content => {
+        [recordsTabContent, statisticsTabContent, thesisTabContent, systemUserTabContent].forEach(content => {
           if (content) content.classList.add('hidden');
         });
       }
@@ -2377,8 +2564,27 @@ Accept & Submit
         });
       }
       
-      // Set Records tab as default active tab
-      recordsTabBtn.click();
+      // System User Tab
+      if (systemUserTabBtn) {
+        systemUserTabBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          resetAllTabs();
+          
+          // Activate this tab
+          systemUserTabBtn.classList.add('border-primary', 'text-primary');
+          systemUserTabBtn.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
+          
+          // Show content
+          if (systemUserTabContent) {
+            systemUserTabContent.classList.remove('hidden');
+            // Initialize user table if needed
+            initializeSystemUsersTable();
+          }
+        });
+      }
+      
+      // Set Statistics tab as default active tab
+      statisticsTabBtn.click();
     }
     
 
@@ -2548,12 +2754,14 @@ Accept & Submit
     const successModal = document.getElementById('successModal');
     const confirmSubmissionBtn = document.getElementById('confirmSubmissionBtn');
     
-    // Show privacy disclaimer modal when confirm button is clicked
+    // Show email notification modal first, then privacy disclaimer modal when confirm button is clicked
     if (confirmSubmissionBtn) {
       confirmSubmissionBtn.addEventListener('click', function() {
-        // Hide success modal and show privacy disclaimer modal
+        // Hide success modal and show email notification modal first
         successModal.classList.add('hidden');
-        privacyDisclaimerModal.classList.remove('hidden');
+        // Show email notification modal first
+        const emailNotificationModal = document.getElementById('emailNotificationModal');
+        emailNotificationModal.classList.remove('hidden');
       });
     }
     
@@ -2649,5 +2857,50 @@ Accept & Submit
     }
   });
 </script>
+<!-- Success Modal -->
+<div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+    <!-- Modal content will be dynamically inserted here -->
+  </div>
+</div>
+
+<!-- Email Notification Modal -->
+<div id="emailNotificationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-auto overflow-hidden">
+    <div class="bg-primary px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-medium text-white flex items-center">
+        <i class="ri-mail-line mr-2"></i>
+        Notification Settings
+      </h3>
+      <button id="closeEmailModalBtn" class="text-white hover:text-gray-200">
+        <i class="ri-close-line text-xl"></i>
+      </button>
+    </div>
+    <div class="px-6 py-4">
+      <div class="mb-4">
+        <p class="text-gray-700 mb-4">Please provide your email address to receive notifications about updates and important information. We'll only use it for this purpose.</p>
+      </div>
+      <form id="emailNotificationForm" class="space-y-4">
+        <div>
+          <label for="notificationEmail" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+          <input type="email" id="notificationEmail" name="notificationEmail" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+        </div>
+        <div class="flex items-center">
+          <input type="checkbox" id="emailConsent" name="emailConsent" class="form-checkbox text-primary" required>
+          <label for="emailConsent" class="ml-2 text-sm text-gray-700">I agree to receive email notifications</label>
+        </div>
+        <div class="flex justify-between pt-2">
+          <button type="button" id="skipEmailBtn" class="bg-gray-100 text-gray-800 px-4 py-2 !rounded-button font-medium hover:bg-gray-200 transition">
+            Skip
+          </button>
+          <button type="submit" class="bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-opacity-90 transition">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

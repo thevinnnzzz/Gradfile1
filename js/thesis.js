@@ -7,10 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const thesisTabBtn = document.getElementById('thesisTabBtn');
   
   // Thesis upload method tab switching
-  const thesisDetailsTabBtn = document.getElementById('thesisDetailsTabBtn');
   const thesisDocumentTabBtn = document.getElementById('thesisDocumentTabBtn');
   const thesisDatabaseTabBtn = document.getElementById('thesisDatabaseTabBtn');
-  const thesisDetailsTabContent = document.getElementById('thesisDetailsTabContent');
   const thesisDocumentTabContent = document.getElementById('thesisDocumentTabContent');
   const thesisDatabaseTabContent = document.getElementById('thesisDatabaseTabContent');
   const recordsTabContent = document.getElementById('recordsTabContent');
@@ -113,11 +111,10 @@ document.addEventListener('DOMContentLoaded', function() {
       thesisTabBtn.classList.add('border-primary', 'text-primary');
       thesisTabContent.classList.remove('hidden');
       
-      // Show database tab content by default if no other tab is active
-      if (thesisDatabaseTabBtn && 
-          !thesisDetailsTabContent.classList.contains('block') && 
+      // Show document upload tab content by default if no other tab is active
+      if (thesisDocumentTabBtn && 
           !thesisDocumentTabContent.classList.contains('block')) {
-        thesisDatabaseTabBtn.click();
+        thesisDocumentTabBtn.click();
       }
     });
   }
@@ -125,36 +122,19 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to reset all inner tabs
   function resetThesisTabs() {
     // Hide all tab contents
-    thesisDetailsTabContent.classList.add('hidden');
-    thesisDetailsTabContent.classList.remove('block');
     thesisDocumentTabContent.classList.add('hidden');
     thesisDocumentTabContent.classList.remove('block');
     thesisDatabaseTabContent.classList.add('hidden');
     thesisDatabaseTabContent.classList.remove('block');
     
     // Reset all tab button styles
-    thesisDetailsTabBtn.classList.remove('border-primary', 'text-primary');
-    thesisDetailsTabBtn.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
     thesisDocumentTabBtn.classList.remove('border-primary', 'text-primary');
     thesisDocumentTabBtn.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
     thesisDatabaseTabBtn.classList.remove('border-primary', 'text-primary');
     thesisDatabaseTabBtn.classList.add('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
   }
   
-  // Handle thesis upload method tab switching
-  if (thesisDetailsTabBtn) {
-    thesisDetailsTabBtn.addEventListener('click', function() {
-      resetThesisTabs();
-      
-      // Show thesis details tab
-      thesisDetailsTabContent.classList.remove('hidden');
-      thesisDetailsTabContent.classList.add('block');
-      
-      // Update tab styling
-      thesisDetailsTabBtn.classList.add('border-primary', 'text-primary');
-      thesisDetailsTabBtn.classList.remove('border-transparent', 'hover:text-gray-600', 'hover:border-gray-300');
-    });
-  }
+
   
   if (thesisDocumentTabBtn) {
     thesisDocumentTabBtn.addEventListener('click', function() {
@@ -187,9 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Thesis details form variables
-  const thesisUploadForm = document.getElementById('thesisUploadForm');
-  const submitThesisBtn = document.getElementById('submitThesisBtn');
+
   
   // Thesis document upload form variables
   const thesisDocumentUploadForm = document.getElementById('thesisDocumentUploadForm');
@@ -205,10 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let selectedDocFile = null;
   let docFileType = '';
   
-  // Enable submit button by default for thesis details form as it no longer requires file upload
-  if (submitThesisBtn) {
-    submitThesisBtn.disabled = false;
-  }
+
   
   // File upload handlers for thesis document form
   if (thesisDocPdfUpload) {
@@ -298,97 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  // Thesis Details Form Submit Handler
-  if (thesisUploadForm) {
-    thesisUploadForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Get form values - use form-specific selectors to avoid ID conflicts
-      const thesisForm = document.getElementById('thesisUploadForm');
-      const thesisTitle = thesisForm.querySelector('#thesisTitle').value.trim();
-      const thesisAuthor = thesisForm.querySelector('#thesisAuthor').value.trim();
-      const thesisBarcode = thesisForm.querySelector('#thesisBarcode').value.trim();
-      const thesisDepartment = thesisForm.querySelector('#thesisDepartment').value;
-      const thesisYear = thesisForm.querySelector('#thesisYear').value;
-      const thesisAbstract = thesisForm.querySelector('#thesisAbstract').value.trim();
-      const thesisKeywords = thesisForm.querySelector('#thesisKeywords').value;
-      
-      // Debug - check what values are being captured
-      console.log('Form submit - Title:', thesisTitle);
-      console.log('Form submit - Author:', thesisAuthor);
-      console.log('Form submit - Barcode:', thesisBarcode);
-      console.log('Form submit - Department:', thesisDepartment);
-      
-      // Validate title is not empty
-      if (!thesisTitle) {
-        alert('Please enter a thesis title');
-        return;
-      }
-      
-      // Update button to show loading state
-      if (submitThesisBtn) {
-        submitThesisBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Uploading...';
-        submitThesisBtn.disabled = true;
-      }
-      
-      // Simulate processing delay
-      setTimeout(function() {
-        // Create new thesis record with a generated ID instead of a file
-        const newThesis = {
-          id: Date.now().toString(),
-          title: thesisTitle,
-          author: thesisAuthor,
-          barcode: thesisBarcode,
-          department: thesisDepartment,
-          year: thesisYear,
-          abstract: thesisAbstract,
-          keywords: thesisKeywords.split(',').map(k => k.trim()),
-          recordType: 'manual',
-          uploadDate: new Date().toISOString()
-        };
-        
-        // Debug log the new thesis object
-        console.log('New thesis record:', newThesis);
-        
-        // Add to records array
-        thesisRecords.unshift(newThesis);
-        
-        // Save to localStorage
-        localStorage.setItem('thesisRecords', JSON.stringify(thesisRecords));
-        
-        // Reset form and re-enable submit button
-        thesisForm.reset();
-        
-        if (submitThesisBtn) {
-          submitThesisBtn.innerHTML = '<i class="ri-save-line mr-2"></i>Save Thesis';
-          submitThesisBtn.disabled = false;
-        }
-        
-        // If database tab is visible, refresh the table
-        if (thesisDatabaseTabContent && !thesisDatabaseTabContent.classList.contains('hidden')) {
-          populateThesisTable();
-        }
-        
-        // Show success message
-        const successToast = document.createElement('div');
-        successToast.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded shadow-lg z-50 flex items-center';
-        successToast.innerHTML = `
-          <i class="ri-check-line mr-2 text-xl"></i>
-          <div>
-            <p class="font-medium">Thesis details saved successfully</p>
-            <p class="text-sm opacity-80">${thesisTitle}</p>
-          </div>
-        `;
-        document.body.appendChild(successToast);
-        
-        // Remove toast after 5 seconds
-        setTimeout(function() {
-          successToast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-          setTimeout(() => successToast.remove(), 300);
-        }, 5000);
-      }, 1500);
-    });
-  }
+
   
   // Thesis Document Upload Form Submit Handler
   if (thesisDocumentUploadForm) {

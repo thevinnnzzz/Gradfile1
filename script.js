@@ -101,47 +101,128 @@ successModal.classList.add('hidden');
     schoolName.required = true;
   }
 });
+// Email notification modal variables
+const closeEmailModalBtn = document.getElementById('closeEmailModalBtn');
+const skipEmailBtn = document.getElementById('skipEmailBtn');
+const emailNotificationForm = document.getElementById('emailNotificationForm');
+
 // Confirm submission function
 document.getElementById('confirmSubmissionBtn').addEventListener('click', function() {
-// Show confirmation message
-const modalContent = document.querySelector('#successModal .bg-white');
-modalContent.innerHTML = `
-<div class="bg-primary px-6 py-4 flex justify-between items-center">
-<h3 class="text-xl font-medium text-white flex items-center">
-<i class="ri-check-line mr-2"></i>
-Submission Successful
-</h3>
-<button id="finalCloseBtn" class="text-white hover:text-gray-200">
-<i class="ri-close-line text-xl"></i>
-</button>
-</div>
-<div class="px-6 py-4">
-<div class="mb-6 text-center">
-<div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-<i class="ri-check-line text-green-500 ri-2x"></i>
-</div>
-<p class="text-gray-700 text-lg">Your research record has been submitted successfully.</p>
-</div>
-<button id="finalCloseBtn2" class="w-full bg-primary text-white px-4 py-3 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">
-Done
-</button>
-</div>
-`;
+  // Show confirmation message
+  const successModal = document.getElementById('successModal');
+  const emailNotificationModal = document.getElementById('emailNotificationModal');
   
-// Add event listeners to new close buttons
-document.getElementById('finalCloseBtn').addEventListener('click', function() {
-  successModal.classList.add('hidden');
-  // Show rating popup after successful submission
-  document.getElementById('ratingAnimation').classList.remove('hidden');
-  researchForm.reset();
-});
+  // First show the success modal
+  successModal.classList.remove('hidden');
   
-document.getElementById('finalCloseBtn2').addEventListener('click', function() {
-  successModal.classList.add('hidden');
-  // Show rating popup after successful submission
-  document.getElementById('ratingAnimation').classList.remove('hidden');
-  researchForm.reset();
+  const modalContent = document.querySelector('#successModal .bg-white');
+  modalContent.innerHTML = `
+  <div class="bg-primary px-6 py-4 flex justify-between items-center">
+  <h3 class="text-xl font-medium text-white flex items-center">
+  <i class="ri-check-line mr-2"></i>
+  Submission Successful
+  </h3>
+  <button id="finalCloseBtn" class="text-white hover:text-gray-200">
+  <i class="ri-close-line text-xl"></i>
+  </button>
+  </div>
+  <div class="px-6 py-4">
+  <div class="mb-6 text-center">
+  <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+  <i class="ri-check-line text-green-500 ri-2x"></i>
+  </div>
+  <p class="text-gray-700 text-lg">Your research record has been submitted successfully.</p>
+  </div>
+  <button id="finalCloseBtn2" class="w-full bg-primary text-white px-4 py-3 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">
+  Done
+  </button>
+  </div>
+  `;
+    
+  // Add event listeners to new close buttons
+  document.getElementById('finalCloseBtn').addEventListener('click', function() {
+    successModal.classList.add('hidden');
+    // Show email notification modal
+    emailNotificationModal.classList.remove('hidden');
+  });
+    
+  document.getElementById('finalCloseBtn2').addEventListener('click', function() {
+    successModal.classList.add('hidden');
+    // Show email notification modal
+    emailNotificationModal.classList.remove('hidden');
+  });
 });
+
+// Email notification modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const emailNotificationModal = document.getElementById('emailNotificationModal');
+  const closeEmailModalBtn = document.getElementById('closeEmailModalBtn');
+  const skipEmailBtn = document.getElementById('skipEmailBtn');
+  const emailNotificationForm = document.getElementById('emailNotificationForm');
+  const privacyDisclaimerModal = document.getElementById('privacyDisclaimerModal');
+  
+  if (closeEmailModalBtn) {
+    closeEmailModalBtn.addEventListener('click', function() {
+      emailNotificationModal.classList.add('hidden');
+      // Show privacy disclaimer modal after closing email modal
+      privacyDisclaimerModal.classList.remove('hidden');
+    });
+  }
+  
+  if (skipEmailBtn) {
+    skipEmailBtn.addEventListener('click', function() {
+      emailNotificationModal.classList.add('hidden');
+      // Show privacy disclaimer modal after skipping email notification
+      privacyDisclaimerModal.classList.remove('hidden');
+    });
+  }
+  
+  if (emailNotificationForm) {
+    emailNotificationForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get the email address
+      const notificationEmail = document.getElementById('notificationEmail').value;
+      
+      // Save email to localStorage for demonstration purposes
+      // In a real application, this would be sent to a server
+      const notificationEmails = JSON.parse(localStorage.getItem('notificationEmails')) || [];
+      notificationEmails.push({
+        email: notificationEmail,
+        date: new Date().toISOString()
+      });
+      localStorage.setItem('notificationEmails', JSON.stringify(notificationEmails));
+      
+      // Hide email modal and show privacy disclaimer modal
+      emailNotificationModal.classList.add('hidden');
+      privacyDisclaimerModal.classList.remove('hidden');
+      
+      // Show success message
+      const successToast = document.createElement('div');
+      successToast.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded shadow-lg z-50 flex items-center';
+      successToast.innerHTML = `
+        <i class="ri-check-line mr-2 text-xl"></i>
+        <div>
+          <p class="font-medium">Thank You!</p>
+          <p class="text-sm opacity-80">You'll receive notifications at ${notificationEmail}</p>
+        </div>
+      `;
+      document.body.appendChild(successToast);
+      
+      // Remove toast after 5 seconds
+      setTimeout(function() {
+        successToast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+        setTimeout(() => successToast.remove(), 300);
+      }, 5000);
+      
+      // Hide email modal
+      emailNotificationModal.classList.add('hidden');
+      
+      // Show rating popup
+      document.getElementById('ratingAnimation').classList.remove('hidden');
+      researchForm.reset();
+    });
+  }
 });
 // Store submissions
 let submissions = JSON.parse(localStorage.getItem('submissions')) || [
@@ -149,6 +230,7 @@ let submissions = JSON.parse(localStorage.getItem('submissions')) || [
     date: '2025-04-10',
     userType: 'LPU',
     name: 'Michael Johnson',
+    email: 'michael.johnson@email.com',
     studentNumber: '2023-0142',
     program: 'Computer Science',
     school: '-',
@@ -159,6 +241,7 @@ let submissions = JSON.parse(localStorage.getItem('submissions')) || [
     date: '2025-04-09',
     userType: 'Non-LPU',
     name: 'Emily Rodriguez',
+    email: 'emily.rodriguez@email.com',
     studentNumber: '-',
     program: '-',
     school: 'Stanford University',
@@ -169,6 +252,7 @@ let submissions = JSON.parse(localStorage.getItem('submissions')) || [
     date: '2025-04-08',
     userType: 'LPU',
     name: 'David Thompson',
+    email: 'david.thompson@email.com',
     studentNumber: '2022-1875',
     program: 'Business Administration',
     school: '-',
@@ -179,6 +263,7 @@ let submissions = JSON.parse(localStorage.getItem('submissions')) || [
     date: '2025-04-07',
     userType: 'LPU',
     name: 'Sarah Williams',
+    email: 'sarah.williams@email.com',
     studentNumber: '2023-0563',
     program: 'Psychology',
     school: '-',
@@ -189,6 +274,7 @@ let submissions = JSON.parse(localStorage.getItem('submissions')) || [
     date: '2025-04-06',
     userType: 'Non-LPU',
     name: 'Robert Chen',
+    email: 'robert.chen@email.com',
     studentNumber: '-',
     program: '-',
     school: 'MIT',
@@ -289,6 +375,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 });
+// This section is now removed as the variables are already declared earlier
+
 // Modify the form submission handler to save to localStorage
 researchForm.addEventListener('submit', function(e) {
 e.preventDefault();
