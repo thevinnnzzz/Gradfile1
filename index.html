@@ -297,7 +297,11 @@ input:checked~label {
 
 <!-- Login Button / Profile Dropdown -->
 <div class="flex items-center">
-  <div class="flex space-x-3">
+  <div class="flex space-x-3 items-center"> <!-- Added items-center for vertical alignment if needed -->
+    <!-- User Theme Toggle Button -->
+    <button id="userThemeToggleBtn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-gray-600 dark:text-gray-300" aria-label="Toggle theme">
+      <i id="userThemeToggleIcon" class="ri-sun-line text-xl"></i>
+    </button>
     <!-- Tutorial Button -->
     <button id="tutorialBtn" class="bg-blue-600 text-white px-4 py-2 !rounded-button font-medium hover:bg-blue-700 transition whitespace-nowrap flex items-center">
       <i class="ri-video-line mr-2"></i>
@@ -2357,15 +2361,17 @@ Accept & Submit
     const lightThemeCheck = document.getElementById('lightThemeCheck');
     const darkThemeCheck = document.getElementById('darkThemeCheck');
     const systemThemeCheck = document.getElementById('systemThemeCheck');
+
+    // User theme toggle button (outside admin dropdown)
+    const userThemeToggleBtn = document.getElementById('userThemeToggleBtn');
+    const userThemeToggleIcon = document.getElementById('userThemeToggleIcon');
     
     // Current theme (default to system)
     let currentTheme = localStorage.getItem('theme') || 'system';
+    // Apply theme on page load - Call this before updateThemeUI that might depend on the class on <html>
+    setTheme(currentTheme);
+    // Update UI elements based on the current theme (including the new toggle button icon)
     updateThemeUI(currentTheme);
-    
-    // Apply theme on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      setTheme(currentTheme);
-    });
     
     if (profileDropdownBtn && profileDropdown) {
       // Toggle dropdown when profile button is clicked
@@ -2476,20 +2482,58 @@ Accept & Submit
     }
     
     // Function to update theme UI
-    function updateThemeUI(theme) {
-      // Hide all check marks
+    function updateThemeUI(selectedTheme) { // Renamed parameter to avoid conflict with global currentTheme
+      // Hide all check marks in admin dropdown
       if (lightThemeCheck) lightThemeCheck.classList.add('hidden');
       if (darkThemeCheck) darkThemeCheck.classList.add('hidden');
       if (systemThemeCheck) systemThemeCheck.classList.add('hidden');
       
-      // Show check mark for selected theme
-      if (theme === 'light' && lightThemeCheck) {
+      // Show check mark for selected theme in admin dropdown
+      if (selectedTheme === 'light' && lightThemeCheck) {
         lightThemeCheck.classList.remove('hidden');
-      } else if (theme === 'dark' && darkThemeCheck) {
+      } else if (selectedTheme === 'dark' && darkThemeCheck) {
         darkThemeCheck.classList.remove('hidden');
-      } else if (theme === 'system' && systemThemeCheck) {
+      } else if (selectedTheme === 'system' && systemThemeCheck) {
         systemThemeCheck.classList.remove('hidden');
       }
+
+      // Update user theme toggle button icon
+      if (userThemeToggleIcon && userThemeToggleBtn) {
+        let isDark;
+        if (selectedTheme === 'system') {
+          isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        } else {
+          isDark = selectedTheme === 'dark';
+        }
+
+        if (isDark) {
+          userThemeToggleIcon.classList.remove('ri-sun-line');
+          userThemeToggleIcon.classList.add('ri-moon-line');
+          userThemeToggleBtn.setAttribute('aria-label', 'Switch to light theme');
+        } else {
+          userThemeToggleIcon.classList.remove('ri-moon-line');
+          userThemeToggleIcon.classList.add('ri-sun-line');
+          userThemeToggleBtn.setAttribute('aria-label', 'Switch to dark theme');
+        }
+      }
+    }
+
+    // Event listener for the user theme toggle button
+    if (userThemeToggleBtn) {
+      userThemeToggleBtn.addEventListener('click', function() {
+        // Determine the currently applied theme by checking class on html element,
+        // as 'currentTheme' might be 'system'.
+        let isCurrentlyDark = document.documentElement.classList.contains('dark-theme');
+
+        // If current is dark, switch to light, else switch to dark.
+        // This simplifies the logic and doesn't cycle through 'system' via this button.
+        // The admin dropdown still allows selecting 'system'.
+        if (isCurrentlyDark) {
+          setTheme('light');
+        } else {
+          setTheme('dark');
+        }
+      });
     }
     
     // Tab switching for admin dashboard

@@ -75,3 +75,42 @@ html.dark-theme .theme-toggle-btn:hover {
 .theme-check {
   color: var(--primary-color);
 }
+
+/* User Theme Toggle Button */
+#userThemeToggleBtn {
+  margin-right: 0.75rem; /* Add some spacing from the next button */
+  padding: 0.5rem; /* Tailwind p-2 equivalent */
+  border-radius: 9999px; /* Tailwind rounded-full */
+  line-height: 1; /* Ensure icon is centered well */
+  transition: background-color 0.2s, color 0.2s;
+}
+
+#userThemeToggleBtn:hover {
+  background-color: var(--table-row-hover); /* Using a theme variable for hover */
+}
+
+#userThemeToggleBtn .ri-sun-line,
+#userThemeToggleBtn .ri-moon-line {
+  font-size: 1.25rem; /* Tailwind text-xl equivalent */
+  display: block; /* Helps with consistent rendering */
+}
+
+/* Specific colors for light/dark mode will be handled by Tailwind's dark: prefixes in HTML
+   and the JS updating the icon, but we can set default text color here via variable */
+#userThemeToggleBtn {
+  color: var(--text-muted);
+}
+
+html.dark-theme #userThemeToggleBtn {
+   color: var(--text-muted); /* Ensure it uses the dark theme's muted text color */
+}
+
+html.dark-theme #userThemeToggleBtn:hover {
+  background-color: var(--secondary-bg); /* A slightly different hover for dark mode */
+}
+
+/* Focus styling (can be enhanced if needed) */
+#userThemeToggleBtn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-color); /* Using primary color for focus ring */
+}
