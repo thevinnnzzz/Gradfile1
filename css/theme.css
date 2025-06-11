@@ -36,6 +36,26 @@
   --badge-silver: linear-gradient(145deg, #c0c0c0, #e6e6e6);
   --badge-gold: linear-gradient(145deg, #ffd700, #ffec99);
   --glow-color: rgba(191, 47, 47, 0.3);
+  --table-header-bg-alt: #fafafa; /* For lighter table headers like systemUsersTable */
+  --progress-track-bg: #e5e7eb; /* gray-200 */
+  --progress-fill-blue: #3b82f6; /* blue-500 */
+  --progress-fill-green: #22c55e; /* green-500 */
+  --progress-fill-yellow: #f59e0b; /* yellow-500 */
+  --progress-fill-purple: #8b5cf6; /* purple-500 */
+  --progress-fill-red: #ef4444; /* red-500 */
+
+  --icon-container-red-bg: #fee2e2; /* red-100 */
+  --icon-container-green-bg: #d1fae5; /* green-100 */
+  --icon-container-blue-bg: #dbeafe; /* blue-100 */
+  --icon-container-purple-bg: #ede9fe; /* purple-100 */
+  --icon-container-yellow-bg: #fef3c7; /* yellow-100 */
+
+  --badge-info-bg: #dbeafe; /* blue-100 */
+  --badge-info-text: #1e40af; /* blue-800 */
+
+  --indigo-color: #4f46e5; /* indigo-600 */
+  --text-on-primary: #ffffff; /* for text on primary-color background */
+  --purple-icon: #8b5cf6; /* purple-500 */
 }
 
 html.dark-theme {
@@ -71,6 +91,27 @@ html.dark-theme {
   --badge-silver: linear-gradient(145deg, #c0c0c0, #808080);
   --badge-gold: linear-gradient(145deg, #ffd700, #b8860b);
   --glow-color: rgba(239, 83, 80, 0.3);
+  --table-row-hover: #3a3a3a; /* Slightly lighter than table-header-bg for hover */
+  --table-header-bg-alt: #2a2a2a;
+  --progress-track-bg: #374151; /* gray-700 dark equivalent for gray-200 light */
+  --progress-fill-blue: #60a5fa; /* blue-400 */
+  --progress-fill-green: #4ade80; /* green-400 */
+  --progress-fill-yellow: #fbbf24; /* yellow-400 */
+  --progress-fill-purple: #a78bfa; /* purple-400 */
+  --progress-fill-red: #f87171; /* red-400 */
+
+  --icon-container-red-bg: #452323; /* Darker, less saturated red */
+  --icon-container-green-bg: #103c2a; /* Darker, less saturated green */
+  --icon-container-blue-bg: #1c3d5f;  /* Darker, less saturated blue */
+  --icon-container-purple-bg: #3b2c5d;/* Darker, less saturated purple */
+  --icon-container-yellow-bg: #4a3f1d;/* Darker, less saturated yellow */
+
+  --badge-info-bg: #2c3a62; /* Darker blue */
+  --badge-info-text: #90caf9; /* Lighter blue text - var(--blue-icon) could work */
+
+  --indigo-color: #818cf8; /* indigo-400 */
+  /* --text-on-primary: #ffffff; -- already white, primary color is light enough in dark mode */
+  --purple-icon: #a78bfa; /* purple-400 */
 }
 
 html.light-theme {
@@ -106,4 +147,24 @@ html.light-theme {
   --badge-silver: linear-gradient(145deg, #c0c0c0, #e6e6e6);
   --badge-gold: linear-gradient(145deg, #ffd700, #ffec99);
   --glow-color: rgba(191, 47, 47, 0.3);
+  --table-header-bg-alt: #fafafa;
+  --progress-track-bg: #e5e7eb;
+  --progress-fill-blue: #3b82f6;
+  --progress-fill-green: #22c55e;
+  --progress-fill-yellow: #f59e0b;
+  --progress-fill-purple: #8b5cf6;
+  --progress-fill-red: #ef4444;
+
+  --icon-container-red-bg: #fee2e2;
+  --icon-container-green-bg: #d1fae5;
+  --icon-container-blue-bg: #dbeafe;
+  --icon-container-purple-bg: #ede9fe;
+  --icon-container-yellow-bg: #fef3c7;
+
+  --badge-info-bg: #dbeafe;
+  --badge-info-text: #1e40af;
+
+  --indigo-color: #4f46e5;
+  --text-on-primary: #ffffff;
+  --purple-icon: #8b5cf6; /* purple-500 */
 }

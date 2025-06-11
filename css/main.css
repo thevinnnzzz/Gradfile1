@@ -81,3 +81,192 @@
 #thesisTitleSuggestions:empty {
   display: none;
 }
+
+/* Admin Dashboard Theme Overrides */
+/* Ensure these apply only within the admin dashboard to avoid unintended global changes */
+
+#adminDashboard .bg-white {
+  background-color: var(--card-bg) !important; /* Override Tailwind's direct bg-white */
+}
+#adminDashboard .bg-gray-50 {
+  background-color: var(--secondary-bg) !important;
+}
+#adminDashboard .bg-gray-100 {
+  background-color: var(--table-header-bg) !important;
+}
+/* For specific cases like systemUsersTable thead */
+#adminDashboard thead.bg-gray-50, #adminDashboard thead.bg-gray-100 { /* thead often has specific bg */
+  background-color: var(--table-header-bg-alt) !important;
+}
+#adminDashboard .text-gray-900 {
+  color: var(--text-color) !important;
+}
+#adminDashboard .text-gray-800 {
+  color: var(--text-color) !important;
+}
+#adminDashboard .text-gray-700 {
+  color: var(--text-muted) !important; /* Or --text-color if more emphasis is needed */
+}
+#adminDashboard .text-gray-600 {
+  color: var(--text-muted) !important;
+}
+#adminDashboard .text-gray-500 {
+  color: var(--text-light) !important; /* Or --text-muted */
+}
+#adminDashboard .border-gray-100 {
+  border-color: var(--border-color) !important;
+}
+#adminDashboard .border-gray-200 {
+  border-color: var(--border-color) !important;
+}
+#adminDashboard .border-gray-300 {
+  border-color: var(--input-border) !important; /* Inputs often use gray-300 */
+}
+#adminDashboard .divide-gray-200 > :not([hidden]) ~ :not([hidden]) { /* For tbody dividers */
+  border-color: var(--border-color) !important;
+}
+
+/* Specific component theming within Admin Dashboard */
+/* Example for tab buttons - active state is handled by Tailwind's text-primary, border-primary */
+#adminDashboard ul > li > a.border-transparent { /* Inactive tabs */
+  color: var(--text-muted);
+  border-bottom-color: transparent; /* Explicitly */
+}
+#adminDashboard ul > li > a.border-transparent:hover {
+  color: var(--text-color);
+  border-bottom-color: var(--border-color);
+}
+/* Active tab should use primary color variables */
+#adminDashboard ul > li > a.text-primary {
+    color: var(--primary-color) !important;
+    border-bottom-color: var(--primary-color) !important;
+}
+
+
+/* Inputs and Selects */
+#adminDashboard input[type="text"],
+#adminDashboard input[type="password"],
+#adminDashboard input[type="email"],
+#adminDashboard input[type="date"],
+#adminDashboard input[type="number"],
+#adminDashboard select,
+#adminDashboard textarea {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--input-border);
+}
+#adminDashboard input[type="text"]:focus,
+#adminDashboard input[type="password"]:focus,
+#adminDashboard input[type="email"]:focus,
+#adminDashboard input[type="date"]:focus,
+#adminDashboard input[type="number"]:focus,
+#adminDashboard select:focus,
+#adminDashboard textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--glow-color); /* Tailwind's focus:ring-primary style */
+}
+#adminDashboard ::placeholder { /* Standard browsers */
+  color: var(--text-light);
+  opacity: 1; /* Firefox */
+}
+#adminDashboard ::-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: var(--text-light);
+}
+#adminDashboard ::-ms-input-placeholder { /* Microsoft Edge */
+  color: var(--text-light);
+}
+
+
+/* Buttons */
+/* Primary buttons (bg-primary text-white) */
+#adminDashboard .bg-primary.text-white,
+#adminDashboard .bg-primary .text-white, /* If text-white is on a child */
+#adminDashboard button[class*="bg-primary"][class*="text-white"] {
+    background-color: var(--primary-color) !important;
+    color: var(--text-on-primary) !important;
+}
+#adminDashboard .bg-primary.text-white:hover,
+#adminDashboard button[class*="bg-primary"][class*="text-white"]:hover {
+    opacity: 0.9; /* Standard Tailwind hover for primary buttons */
+}
+
+/* Indigo buttons (e.g. thesisExportBtn) */
+#adminDashboard .bg-indigo-600 {
+    background-color: var(--indigo-color) !important;
+    color: var(--text-on-primary) !important; /* Assuming white text */
+}
+#adminDashboard .bg-indigo-600:hover {
+    filter: brightness(90%); /* Or use a dark indigo var if defined */
+}
+
+
+/* Specific icon container backgrounds from Statistics & Thesis tabs */
+#adminDashboard .bg-green-100 { background-color: var(--icon-container-green-bg) !important; }
+#adminDashboard .text-green-600 { color: var(--green-icon) !important; }
+
+#adminDashboard .bg-purple-100 { background-color: var(--icon-container-purple-bg) !important; }
+#adminDashboard .text-purple-600 { color: var(--purple-icon, #a855f7) !important; /* Define --purple-icon or use appropriate var */ }
+
+#adminDashboard .bg-blue-100 { background-color: var(--icon-container-blue-bg) !important; }
+#adminDashboard .text-blue-600 { color: var(--blue-icon) !important; }
+
+#adminDashboard .bg-yellow-100 { background-color: var(--icon-container-yellow-bg) !important; }
+#adminDashboard .text-yellow-600 { color: var(--warning-color) !important; /* Or a specific yellow icon var */ }
+
+#adminDashboard .bg-red-100 { background-color: var(--icon-container-red-bg) !important; }
+#adminDashboard .text-red-600 { color: var(--error-color) !important; /* Or a specific red icon var */ }
+
+
+/* Progress bars in Statistics */
+#adminDashboard .bg-gray-200[style*="width:"] { /* Likely a progress bar track */
+    background-color: var(--progress-track-bg) !important;
+}
+#adminDashboard .bg-blue-500[style*="width:"] { background-color: var(--progress-fill-blue) !important; }
+#adminDashboard .bg-green-500[style*="width:"] { background-color: var(--progress-fill-green) !important; }
+#adminDashboard .bg-yellow-500[style*="width:"] { background-color: var(--progress-fill-yellow) !important; }
+#adminDashboard .bg-purple-500[style*="width:"] { background-color: var(--progress-fill-purple) !important; }
+#adminDashboard .bg-red-500[style*="width:"] { background-color: var(--progress-fill-red) !important; }
+
+/* Role Badge in System User Tab */
+#adminDashboard .bg-blue-100.text-blue-800 { /* Specific badge class combo */
+    background-color: var(--badge-info-bg) !important;
+    color: var(--badge-info-text) !important;
+}
+
+/* Modals within Admin Dashboard */
+#adminDashboard .fixed.inset-0[class*="bg-black"][class*="bg-opacity-50"] { /* Modal overlay */
+    background-color: var(--modal-overlay) !important;
+}
+/* Modal content area if it uses bg-white */
+#adminDashboard .bg-white.rounded-lg.shadow-xl {
+    background-color: var(--modal-bg) !important;
+}
+/* Modal headers, e.g., bg-primary */
+#adminDashboard div[id$="Modal"] .bg-primary {
+    background-color: var(--primary-color) !important;
+    color: var(--text-on-primary) !important;
+}
+#adminDashboard div[id$="Modal"] .bg-primary .text-white { /* Text in modal headers */
+    color: var(--text-on-primary) !important;
+}
+#adminDashboard div[id$="Modal"] .text-xl.font-medium.text-white { /* Modal title text */
+     color: var(--text-on-primary) !important;
+}
+
+/* Ensure icons in admin dashboard adapt */
+#adminDashboard [class*="ri-"], #adminDashboard [class*="fa-"] {
+    /* If they don't inherit color properly, might need specific rules, */
+    /* but usually they inherit 'currentColor' or are explicitly colored by text-*-xxx classes */
+}
+
+/* Active tab's icon color should also be primary */
+#adminDashboard ul > li > a.text-primary i {
+    color: var(--primary-color) !important;
+}
+/* Inactive tab's icon color */
+#adminDashboard ul > li > a.border-transparent i {
+    color: var(--text-muted); /* Match link color */
+}
+#adminDashboard ul > li > a.border-transparent:hover i {
+    color: var(--text-color); /* Match link hover color */
+}
